@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { changeUsername } from './actions/recentActions'
+import { changeUsername } from './actions/actions'
 
 const searchinputStyle = {
     input: {
