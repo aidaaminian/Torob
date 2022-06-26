@@ -108,6 +108,15 @@ class Home extends Component{
         })
     }
 
+    changePasswordType(){
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+    }
+
     removeClick(){
         this.state.dim === 'dim' ? this.setState({dim: ''}) : this.setState({})
         this.state.mtdisp === 'disp' ? this.setState({mtdisp: 'displaynone'}) : this.setState({})
@@ -218,8 +227,14 @@ class Home extends Component{
                             رمز عبور
                         </div>
                         <div class="input-block">
-                            <input id="password" onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="text" /> 
+                            <input id="password" onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" /> 
                         </div>
+                        <label>
+                            <input type="checkbox" onClick={this.changePasswordType.bind(this)}/>
+                            <span class="checkbox-text">
+                                show password
+                            </span>
+                        </label>
                         <div class={this.state.passwordError}>
                             رمز عبور باید دارای حداق ۸ حرف و شامل یک حرف بزرگ، یک حرف کوچک و یک عدد باشد.
                         </div>
