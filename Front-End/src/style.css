@@ -372,6 +372,7 @@ nav{
     width: 85px;
     min-width: 50px;
     font-family: iranyekan;
+    cursor: pointer;
 }
 
 .mobile-tablet-page{
@@ -561,11 +562,11 @@ nav{
 
 .product-page{
     background-color: var(--lightergrey);
-    height: 700px;
     display: flex;
     flex-direction: column;
     align-items: center;
     row-gap: 20px;
+    padding-bottom: 30px;
 }
 
 .product-route{
@@ -602,6 +603,7 @@ nav{
     font-size: 16px;
     font-weight: bold;
     direction: rtl;
+    margin-bottom: 10px;
 }
 
 .prdocut-price{
@@ -626,7 +628,6 @@ nav{
 .product-spcfs{
     background-color: var(--white);
     width: 425px;
-    height: 330px;
     border-radius: 4px;
     display: flex;
     flex-direction: column;
@@ -648,10 +649,13 @@ nav{
     border: 0;
     border-radius: 15px;
     height: 30px;
-    width: 70px;
     color: #333333;
     font-family: iranyekan;
     font-size: 13px;
+    display: flex;
+    align-items: center;
+    padding: 0px 10px;
+    cursor: pointer;
 }
 
 .buy-block{
@@ -671,6 +675,7 @@ nav{
     color: #d73948;
     font-family: iranyekan;
     font-size: 13px;
+    cursor: pointer;
 }
 
 .prdocut-line{
@@ -697,7 +702,6 @@ nav{
 .shop-cart{
     background-color: var(--white);
     width: 505px;
-    height: 150px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -705,12 +709,14 @@ nav{
     padding-right: 25px;
     padding-left: 25px;
     margin-bottom: 1px;
+    padding-bottom: 30px;
 }
 
 .spcfc-detail{
     font-size: 14px;
     font-weight: bold;
     font-family: iranyekan;
+    direction: rtl;
 }
 
 .spcfc{
@@ -1099,6 +1105,7 @@ nav{
     box-shadow: 0px 0px 7px 1px #ccc;
     position: absolute;
     margin-top: 52px;
+    z-index: 1;
 }
 
 .navbar-bottom{
@@ -1227,14 +1234,12 @@ nav{
 .price-button-showed{
     background-color: var(--white);
     border: 1px solid #e9ecef;
-    width: 130px;
     margin-top: 10px;
     margin-bottom: 40px;
     height: 30px;
     border-radius: 30px;
     font-family: iranyekan;
     font-size: 12px;
-    margin-right: 25px;
     cursor: pointer;
     display: flex;
     flex-direction: row;
@@ -1297,6 +1302,7 @@ nav{
 .price-showed-close{
     font-size: 20px;
     cursor: pointer;
+    color: var(--black);
 }
 
 .input-search-brand{
@@ -1358,4 +1364,44 @@ nav{
 
 .price-button:focus{
     background-color: #e9ecef;
+}
+
+.showed-buttons-block{
+    display: flex;
+    height: 40px;
+    margin-right: 35px;
+    column-gap: 10px;
+}
+
+.navitem:hover{
+    color: #d73948;
+}
+
+.svg-arrow-left-route{
+    transform: rotate(90deg);
+    fill: #808080;
+    margin-top: 3px;
+}
+
+.shop-cart:hover{
+    background-color: #f4f8ff;
+}
+
+.prdocut-price-buy-block{
+    display: flex;
+    justify-content: space-between;
+    width: inherit;
+    padding-top: 10px;
+}
+
+.prdocut-price-buy-block:active{
+    background-color: #d73948;
+}
+
+.prdocut-price-block{
+    color: #d73948;
+    font-family: iranyekan;
+    font-size: 18px;
+    width: 200px;
+    direction: rtl;
 }

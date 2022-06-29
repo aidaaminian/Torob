@@ -80,6 +80,22 @@ class Browse extends Component{
                     }
                     ]
                 } )
+            this.setState({
+                    items: [{
+                        img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
+                        name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
+                        min_price: "۴۵٫۶۹۹٫۰۰۰",
+                        max_price: "۵۸٫۵۰۰٫۰۰۰",
+                        head: 'mobiletablet',
+                        category: 'mobile',
+                        sub_category: 'apple',
+                        internal_storage: '256 گیگابایت',
+                        weight: '240 گرم',
+                        warranty: 'گارانتی 18 ماهه',
+                        color: 'نقره‌ای'
+                    }
+                    ]
+                } )
     }
     
     mobileDropdown(){
@@ -106,34 +122,26 @@ class Browse extends Component{
         this.setState({priceDropdownClicked: ~this.state.priceDropdownClicked})
     }
 
-    showSubCategoryDropdown(){}
 
     saveSortButtonClick(){
         document.getElementById("sortbuttonicon").style.backgroundColor = "unset";
         this.setState({sortbuttonClicked: ~this.state.sortbuttonClicked})
     }
 
-    priceButtonClick(minprice, maxprice){
+    priceButtonClick(){
         const filteredItems = [].concat(this.state.items)
-        /*filteredItems.filter((a) => (a.price <= maxprice && a.price >= minprice) ? 1 : -1)
+        /*filteredItems.filter((a) => (a.max_price <= this.state.maxValues && a.min_price >= this.state.minValues) ? 1 : -1)
         this.setState({
             showPriceButtonClicked: ~this.state.showPriceButtonClicked,
             items: filteredItems
         })*/
+        this.setState({
+            showPriceButtonClicked: ~this.state.showPriceButtonClicked
+        })
     }
 
     changeUsernameBlurStyle(){
         document.getElementById("username").style.border = "1px solid #ccc"; 
-    }
-
-    userButtonClick(){
-        document.getElementById("usernamebutton").style.backgroundColor = "unset"; 
-        let dimv = this.state.dim === 'dim' ? '': 'dim'
-        let loginregisterdialoguev = this.state.loginregisterdialogue === 'login-register-dialogue' ? 'displaynone': 'login-register-dialogue'
-        this.setState({
-            dim: dimv,
-            loginregisterdialogue: loginregisterdialoguev
-        })
     }
 
     minValueInput(){
@@ -155,7 +163,7 @@ class Browse extends Component{
         .then(json => this.setState({ favorites: json }));
     }
 
-    removeClick(){
+    removePriceClick(){
         this.setState({showPriceButtonClicked: ~this.state.showPriceButtonClicked})
     }
 
@@ -182,6 +190,7 @@ class Browse extends Component{
         let head = this.props.match.params.headid
         let category = this.props.match.params.categoryid
         let subCategory = this.props.match.params.subcategoryid
+        let brandName
         switch(head){
             case('mobiletablet'):
                 head = 'موبایل و تبلت'
@@ -213,18 +222,23 @@ class Browse extends Component{
         switch(subCategory){
             case('apple'):
                 subCategory = 'اپل (Apple)'
+                brandName = 'اپل'
                 break;
             case('samsung'):
                 subCategory = 'سامسونگ (Samsung)'
+                brandName = 'سامسونگ'
                 break;
             case('xiaomi'):
                 subCategory = 'شیائومی (Xiaomi)'
+                brandName = 'شیائومی'
                 break;
             case('lenovo'):
                 subCategory = 'لنوو (Lenovo)'
+                brandName = 'لنوو'
                 break;
             case('asus'):
                 subCategory = 'ایسوس (Asus)'
+                brandName = 'ایسوس'
                 break; 
         }
         let categorySlashShow = category ? '\\' : 'displaynone'
@@ -237,8 +251,10 @@ class Browse extends Component{
         head === 'لپ‌تاپ' && subCategory !== undefined ? title = 'لپ‌تاپ ' + title : title = title
         let maxValue, minValue
         head === 'موبایل و تبلت' && category === undefined ? maxValue = '۱٫۷۱۵٫۹۸۵٫۰۰۰' : maxValue = maxValue
+        head === 'لپ‌تاپ' && category === undefined ? maxValue = '۱٫۹۵۳٫۰۰۰٫۰۰۰' : maxValue = maxValue
         category === 'موبایل' && subCategory === undefined ? maxValue = '۳۵۶٫۶۷۹٫۴۰۰' : maxValue = maxValue
         category === 'تبلت' && subCategory === undefined ? maxValue = '۱۱۰٫۶۵۳٫۷۰۰' : maxValue = maxValue
+        category === 'لپ‌تاپ' && subCategory === undefined ? maxValue = '۶۶۴٫۳۰۴٫۲۰۰' : maxValue = maxValue
         subCategory === 'سامسونگ (Samsung)' && category === 'موبایل' ? maxValue = '۴۸٫۹۵۰٫۰۰۰' : maxValue = maxValue
         subCategory === 'شیائومی (Xiaomi)' && category === 'موبایل' ? maxValue = '۳۳٫۹۹۹٫۰۰۰' : maxValue = maxValue
         subCategory === 'اپل (Apple)' && category === 'موبایل' ? maxValue = '۶۶٫۰۰۰٫۰۰۰' : maxValue = maxValue
@@ -251,6 +267,7 @@ class Browse extends Component{
         maxValue = this.state.maxValues ?  this.state.maxValues : maxValue
         minValue = this.state.minValues ?  this.state.minValues : '۰'
         let leftPanelTitle = category ? 'انتخاب برند' : 'دسته‌بندی دقیق‌تر'
+        let showCategoryButtonClicked = subCategory ? 1 : 0
         let addedItems = this.state.items ?
             (  
                 this.state.items.map((item) => {
@@ -263,7 +280,7 @@ class Browse extends Component{
                                 {item.name}
                             </div>
                             <div class="product-price">
-                                {item.price}   
+                                از {item.min_price} تومان   
                             </div>
                             <Link to={window.location.pathname} class="favorite">
                                 <svg id="favoritesvg" class="favoritesvg" onClick={this.setFavoriteClick(item.id)} fill={this.state.favoriteClickColor} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی"><g><path d="M21.233 3.881C20.077 2.693 18.535 2 16.898 2a6.268 6.268 0 0 0-4.433 1.881l-.385.396-.385-.396a6.104 6.104 0 0 0-8.768 0C1.674 5.07 1 6.752 1 8.436c0 1.683.674 3.366 1.83 4.554l8.48 8.713c.192.198.385.297.674.297.289 0 .481-.099.674-.297l8.479-8.713c1.156-1.188 1.83-2.871 1.83-4.554.193-1.684-.481-3.367-1.734-4.555zm-1.349 7.723l-7.804 8.02-7.804-8.02c-.867-.891-1.253-1.98-1.253-3.168 0-1.188.482-2.278 1.253-3.169.77-.89 1.927-1.287 2.987-1.287 1.156 0 2.216.396 3.083 1.287l1.06 1.09a.914.914 0 0 0 1.349 0l.963-1.09c.867-.792 1.927-1.287 3.18-1.287 1.156 0 2.216.495 3.083 1.287.77.891 1.252 1.98 1.252 3.169 0 1.188-.482 2.277-1.349 3.168z"></path></g></svg>
@@ -329,12 +346,20 @@ class Browse extends Component{
                         <div class="category-list-title"> 
                             قیمت انواع {title}  
                         </div>
-                        <button id="usernamebutton" onClick={this.userButtonClick.bind(this)} class={ this.state.showPriceButtonClicked ? 'price-button-showed' : 'displaynone'}>
-                            <div onClick={this.removeClick.bind(this)} class="price-showed-close">
-                                ×
+                        <div class={ this.state.showPriceButtonClicked || showCategoryButtonClicked ? 'showed-buttons-block' : 'displaynone'}>
+                            <button class={ this.state.showPriceButtonClicked ? 'price-button-showed' : 'displaynone'}>
+                                <div onClick={this.removePriceClick.bind(this)} class="price-showed-close">
+                                    ×
+                                </div>
+                                از {minValue} تا {maxValue}
+                            </button>
+                            <div  class={ showCategoryButtonClicked ? 'price-button-showed' : 'displaynone'}>
+                                <Link to={window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'))} class="price-showed-close">
+                                    ×
+                                </Link>
+                                {brandName}
                             </div>
-                            از {minValue} تا {maxValue}
-                        </button>
+                        </div>
                         <div class="products">
                             {addedItems}
                         </div>
@@ -429,18 +454,18 @@ class Browse extends Component{
                                     </div>
                                 </Link>  
                             </div>
-                            <Link to="/browse/mobiletablet" id="subcategorydropdown" onClick={this.showSubCategoryDropdown.bind(this)} class={ ~this.state.categoryDropdownClicked && category === undefined ? 'subcategory-detail-block' : 'displaynone'} >
+                            <Link to="/browse/mobiletablet" class={ ~this.state.categoryDropdownClicked && category === undefined ? 'subcategory-detail-block' : 'displaynone'} >
                                 <div class="subcategory-detail">
                                     موبایل و تبلت 
                                 </div>
                                 <svg class="svg-arrow-left"  fill="#333333" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="chevron-up" ><g><path d="M18.7 9.7l-6 6c-.2.2-.4.3-.7.3-.3 0-.5-.1-.7-.3l-6-6c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0l5.3 5.3 5.3-5.3c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4z"></path></g></svg>  
                             </Link>
-                            <Link to="/browse/mobiletablet/mobile" id="subcategorydropdown" class={ ~this.state.categoryDropdownClicked && category === undefined ? 'subcategory-detail-block' : 'displaynone'} >
+                            <Link to="/browse/mobiletablet/mobile" class={ ~this.state.categoryDropdownClicked && category === undefined ? 'subcategory-detail-block' : 'displaynone'} >
                                 <div class="subsubcategory-detail">
                                     گوشی موبایل 
                                 </div>
                             </Link>
-                            <Link to="/browse/mobiletablet/tablet" id="subcategorydropdown" class={ ~this.state.categoryDropdownClicked && category === undefined ? 'subcategory-detail-block' : 'displaynone'} >
+                            <Link to="/browse/mobiletablet/tablet" class={ ~this.state.categoryDropdownClicked && category === undefined ? 'subcategory-detail-block' : 'displaynone'} >
                                 <div class="subsubcategory-detail">
                                     تبلت 
                                 </div>
@@ -469,7 +494,7 @@ class Browse extends Component{
                                     </div>
                                 </div>
                             </div>
-                            <button onClick={this.priceButtonClick({minValue}, {maxValue})} class="price-button">اعمال فیلتر قیمت</button>   
+                            <button onClick={this.priceButtonClick.bind(this)} class="price-button">اعمال فیلتر قیمت</button>   
                         </div>
                     </div>
                 </div>
