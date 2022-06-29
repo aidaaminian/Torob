@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { changeUsername } from './actions/actions'
 
 const searchinputStyle = {
@@ -59,7 +60,8 @@ class Home extends Component{
             usernameError: 'displaynone',
             passwordError: 'displaynone',
             emailError: 'displaynone',
-            searchblock: 'displaynone'
+            searchblock: 'displaynone',
+            searchItems: []
         };
     }
 
@@ -194,6 +196,23 @@ class Home extends Component{
         document.getElementById("email").style.border = "0"; 
     }
 
+    changeBlurStyle(){
+        document.getElementById("searchinput").style.border = "0"; 
+        this.setState({searchblock: 'displaynone'})
+    }
+
+    searchInput(){
+        this.setState({searchblock: 'search-block'})
+        fetch("http://localhost:3000/api/" + document.getElementById("searchinput").value
+            ).then((res) => res.json())
+            .then((json) => {
+                this.setState({
+                    searchItems: json
+                }
+            );
+        })
+    }
+
     render(){  
         let loginregistervalue = this.props.username === null ? "ورود / ثبت نام" : this.props.username  
         return(
@@ -216,7 +235,7 @@ class Home extends Component{
                             نام کاربری
                         </div>
                         <div class="input-block">
-                            <input id="username" onFocus={this.changeUsernameFocusStyle.bind(this)} onBlur={this.changeUsernameBlurStyle.bind(this)} style={nameinputStyle.input} type="text" /> 
+                            <input autocomplete="off" id="username" onFocus={this.changeUsernameFocusStyle.bind(this)} onBlur={this.changeUsernameBlurStyle.bind(this)} style={nameinputStyle.input} type="text" /> 
                         </div>
                         <div class={this.state.usernameError}>
                             نام کاربری قبلا استفاده شده است.
@@ -244,7 +263,7 @@ class Home extends Component{
                             آدرس ایمیل
                         </div>
                         <div class="input-block">
-                            <input id="email" style={nameinputStyle.input} onFocus={this.changeEmailFocusStyle.bind(this)} onBlur={this.changeEmailBlurStyle.bind(this)} type="text" /> 
+                            <input autocomplete="off" id="email" style={nameinputStyle.input} onFocus={this.changeEmailFocusStyle.bind(this)} onBlur={this.changeEmailBlurStyle.bind(this)} type="text" /> 
                         </div>
                         <div class={this.state.emailError}>
                             آدرس ایمیل وارد شده معتبر نیست.
@@ -267,12 +286,12 @@ class Home extends Component{
                         <div class="">
                             <button onClick={this.userButtonClick.bind(this)} class="user-button">{loginregistervalue}</button>
                             <div class={this.state.userdropdown}>
-                                <a class="navlinks" href="/favorite">
+                                <Link class="navlinks" to="/favorite">
                                     محبوب‌ها
-                                </a>
-                                <a class="navlinks" href="/history">
+                                </Link>
+                                <Link class="navlinks" to="/history">
                                     مشاهدات اخیر
-                                </a>
+                                </Link>
                                 <div class="navlinks" onClick={this.closeClick.bind(this)}>
                                     خروج
                                 </div>
@@ -281,60 +300,60 @@ class Home extends Component{
                     </div>
                     <div class={this.state.mtdisp}>
                         <div class="dropdown-items">
-                            <a href="/mobiletablet" class="dropdown-title">
+                            <Link to="/browse/mobiletablet" class="dropdown-title">
                                 موبایل و تبلت
-                            </a>
+                            </Link>
                             <div class="dropdown-categories">
                                 <div class="category">
-                                    <a href="/mobile" class="category-title">
+                                    <Link to="/browse/mobiletablet/mobile" class="category-title">
                                         گوشی موبایل 
-                                    </a>
-                                    <a href="/mobile/samsung" class="category-item">
+                                    </Link>
+                                    <Link to="/browse/mobiletablet/mobile/samsung" class="category-item">
                                         گوشی سامسونگ
-                                    </a>
-                                    <a href="/mobile/xiaomi" class="category-item">
+                                    </Link>
+                                    <Link to="/browse/mobiletablet/mobile/xiaomi" class="category-item">
                                         گوشی شیائومی
-                                    </a>
-                                    <a href="/mobile/apple" class="category-item">
+                                    </Link>
+                                    <Link to="/browse/mobiletablet/mobile/apple" class="category-item">
                                         گوشی اپل
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div class="category">
-                                    <a href="/tablet" class="category-title">
+                                    <Link to="/browse/mobiletablet/tablet" class="category-title">
                                         تبلت 
-                                    </a>
-                                    <a href="/tablet/samsung" class="category-item">
+                                    </Link>
+                                    <Link to="/browse/mobiletablet/tablet/samsung" class="category-item">
                                         تبلت سامسونگ
-                                    </a>
-                                    <a href="/tablet/xiaomi" class="category-item">
+                                    </Link>
+                                    <Link to="/browse/mobiletablet/tablet/xiaomi" class="category-item">
                                         تبلت  شیائومی
-                                    </a>
-                                    <a href="/tablet/apple" class="category-item">
+                                    </Link>
+                                    <Link to="/browse/mobiletablet/tablet/apple" class="category-item">
                                         تبلت اپل
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>  
                         </div>
                     </div>
                     <div class={this.state.laptopdisp}>
                         <div class="dropdown-items">
-                            <a href="/laptop" class="dropdown-title">
+                            <Link to="/browse/laptop" class="dropdown-title">
                                 لپتاپ
-                            </a>
+                            </Link>
                             <div class="dropdown-categories">
                                 <div class="category">
-                                    <a href="/laptop" class="category-title">
+                                    <Link to="/browse/laptop/laptop" class="category-title">
                                         لپتاپ 
-                                    </a>
-                                    <a href="/laptop/lenovo" class="category-item">
+                                    </Link>
+                                    <Link to="/browse/laptop/laptop/lenovo" class="category-item">
                                         لپتاپ لنوو
-                                    </a>
-                                    <a href="/laptop/asus" class="category-item">
+                                    </Link>
+                                    <Link to="/browse/laptop/laptop/asus" class="category-item">
                                         لپتاپ  ایسوس
-                                    </a>
-                                    <a href="/laptop/apple" class="category-item">
+                                    </Link>
+                                    <Link to="/browse/laptop/laptop/apple" class="category-item">
                                         لپتاپ اپل
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>  
                         </div>
@@ -349,19 +368,19 @@ class Home extends Component{
                                     موتور جستجوی هوشمند خرید
                                 </div>
                             </div>
-                            <a href="/">
+                            <Link to="/">
                                 <img src="https://torob.com/static/images/torob_logo.svg"/>
-                            </a>
+                            </Link>
                         </div>
                         <div class="search">
-                            <input name="searchinput" style={searchinputStyle.input} type="text" placeholder="نام کالا را وارد کنید" />
+                            <input id="searchinput" onInput={this.searchInput.bind(this)} onBlur={this.changeBlurStyle.bind(this)} style={searchinputStyle.input} type="text" placeholder="نام کالا را وارد کنید" />
                             <img class="serachicon" src="https://torob.com/static/images/search.svg"/>       
                         </div>
                         <div class={this.state.searchblock}>
                         </div>
                     </div>
                     <div class="navbar-bottom">
-                        <a href="/shopping" class="nav-item-bottom">پنل فروشگاه‌ها</a>
+                        <Link to="/shopping" class="nav-item-bottom">پنل فروشگاه‌ها</Link>
                     </div>
                 </div>    
             </div>
