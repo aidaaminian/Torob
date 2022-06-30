@@ -14,6 +14,20 @@ const searchinputStyle = {
     }
 };
 
+const searchInputStyle_m = {
+    input: {
+        color: "black",
+        backgroundColor: "#f2f3f5",
+        border: 0,
+        height: "43px",
+        width:"380px",
+        fontFamily: "iranyekan",
+        "font-size": "16px",
+        "padding-bottom": "2px",
+        direction: "rtl"
+    }
+};
+
 const nameinputStyle = {
     input: {
         color: "black",
@@ -55,7 +69,7 @@ class Home extends Component{
             dim: '',
             loginchange: 'login-register-change-mode',
             registerchange: 'displaynone',
-            emailClass: 'login-register-input-div',
+            emailClass: 'login-register-input-div-home',
             userdropdown: 'displaynone',
             usernameError: 'displaynone',
             passwordError: 'displaynone',
@@ -74,7 +88,7 @@ class Home extends Component{
             dim: '',
             loginchange: 'login-register-change-mode',
             registerchange: 'displaynone',
-            emailClass: 'login-register-input-div',
+            emailClass: 'login-register-input-div-home',
             userdropdown: 'displaynone',
             usernameError: 'displaynone',
             passwordError: 'displaynone',
@@ -128,7 +142,7 @@ class Home extends Component{
         this.setState({
             loginchange: 'login-register-change-mode',
             registerchange: 'displaynone',
-            emailClass: 'login-register-input-div'
+            emailClass: 'login-register-input-div-home'
         })
     }
 
@@ -169,7 +183,7 @@ class Home extends Component{
     changeloginRegisterMode(){
         this.state.loginchange === 'displaynone' ? this.setState({loginchange: 'login-register-change-mode'}) : this.setState({loginchange: 'displaynone'})
         this.state.registerchange === 'login-register-change-mode' ? this.setState({registerchange: 'displaynone'}) : this.setState({registerchange: 'login-register-change-mode'})
-        this.state.loginchange === 'login-register-change-mode' ? this.setState({emailClass: 'displaynone'}) : this.setState({emailClass: 'login-register-input-div'})
+        this.state.loginchange === 'login-register-change-mode' ? this.setState({emailClass: 'displaynone'}) : this.setState({emailClass: 'login-register-input-div-home'})
     }
 
     changeUsernameFocusStyle(){
@@ -214,9 +228,11 @@ class Home extends Component{
     }
 
     render(){  
+        const resolution = window.innerWidth;
+        const isDesktop = resolution >= 768
         let loginregistervalue = this.props.username === null ? "ورود / ثبت نام" : this.props.username  
-        return(
-            <div class="app">
+        return isDesktop ? (
+            <div class="home-page">
                 <div class={this.state.loginregisterdialogue}>
                     <div class="login-register-close-flex">
                         <div onClick={this.removeClick.bind(this)} class="login-register-close">
@@ -230,7 +246,7 @@ class Home extends Component{
                         <div class="login-register-line">
                         </div>
                     </div>
-                    <div class="login-register-input-div">
+                    <div class="login-register-input-div-home">
                         <div class="login-register-input-label">
                             نام کاربری
                         </div>
@@ -241,7 +257,7 @@ class Home extends Component{
                             نام کاربری قبلا استفاده شده است.
                         </div>
                     </div>
-                    <div class="login-register-input-div">
+                    <div class="login-register-input-div-home">
                         <div class="login-register-input-label">
                             رمز عبور
                         </div>
@@ -263,7 +279,7 @@ class Home extends Component{
                             آدرس ایمیل
                         </div>
                         <div class="input-block">
-                            <input autocomplete="off" id="email" style={nameinputStyle.input} onFocus={this.changeEmailFocusStyle.bind(this)} onBlur={this.changeEmailBlurStyle.bind(this)} type="text" /> 
+                            <input autoComplete='off' id="email" style={nameinputStyle.input} onFocus={this.changeEmailFocusStyle.bind(this)} onBlur={this.changeEmailBlurStyle.bind(this)} type="text" /> 
                         </div>
                         <div class={this.state.emailError}>
                             آدرس ایمیل وارد شده معتبر نیست.
@@ -283,7 +299,7 @@ class Home extends Component{
                             <a onClick={this.mobileDropdown.bind(this)} class="nav-item">موبایل و تبلت</a>
                             <a onClick={this.laptopDropdown.bind(this)} class="nav-item" >لپ‌تاپ</a>
                         </div>
-                        <div class="">
+                        <div>
                             <button onClick={this.userButtonClick.bind(this)} class="user-button">{loginregistervalue}</button>
                             <div class={this.state.userdropdown}>
                                 <Link class="navlinks" to="/favorite">
@@ -373,17 +389,100 @@ class Home extends Component{
                             </Link>
                         </div>
                         <div class="search">
-                            <input id="searchinput" onInput={this.searchInput.bind(this)} onBlur={this.changeBlurStyle.bind(this)} style={searchinputStyle.input} type="text" placeholder="نام کالا را وارد کنید" />
+                            <input autoFocus id="searchinput" onInput={this.searchInput.bind(this)} onBlur={this.changeBlurStyle.bind(this)} style={searchinputStyle.input} type="text" placeholder="نام کالا را وارد کنید" />
                             <img class="serachicon" src="https://torob.com/static/images/search.svg"/>       
                         </div>
                         <div class={this.state.searchblock}>
                         </div>
                     </div>
                     <div class="navbar-bottom">
-                        <Link to="/shopping" class="nav-item-bottom">پنل فروشگاه‌ها</Link>
+                        <Link to="/shop" class="nav-item-bottom">پنل فروشگاه‌ها</Link>
                     </div>
                 </div>    
             </div>
+        ):
+        (
+            <div>
+                <div class={this.state.loginregisterdialogue}>
+                    <div class="login-register-close-flex">
+                        <div onClick={this.removeClick.bind(this)} class="login-register-close">
+                            ×
+                        </div>
+                    </div>
+                    <div class="login-register-div">
+                        <div class="login-register-title">
+                            ورود یا ثبت نام
+                        </div>
+                        <div class="login-register-line">
+                        </div>
+                    </div>
+                    <div class="login-register-input-div-home">
+                        <div class="login-register-input-label">
+                            نام کاربری
+                        </div>
+                        <div class="input-block">
+                            <input autocomplete="off" id="username" onFocus={this.changeUsernameFocusStyle.bind(this)} onBlur={this.changeUsernameBlurStyle.bind(this)} style={nameinputStyle.input} type="text" /> 
+                        </div>
+                        <div class={this.state.usernameError}>
+                            نام کاربری قبلا استفاده شده است.
+                        </div>
+                    </div>
+                    <div class="login-register-input-div-home">
+                        <div class="login-register-input-label">
+                            رمز عبور
+                        </div>
+                        <div class="input-block">
+                            <input id="password" onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" /> 
+                        </div>
+                        <label>
+                            <input type="checkbox" onClick={this.changePasswordType.bind(this)}/>
+                            <span class="checkbox-text">
+                                show password
+                            </span>
+                        </label>
+                        <div class={this.state.passwordError}>
+                            رمز عبور باید دارای حداق ۸ حرف و شامل یک حرف بزرگ، یک حرف کوچک و یک عدد باشد.
+                        </div>
+                    </div>
+                    <div class={this.state.emailClass}>
+                        <div class="login-register-input-label">
+                            آدرس ایمیل
+                        </div>
+                        <div class="input-block">
+                            <input autocomplete="off" id="email" style={nameinputStyle.input} onFocus={this.changeEmailFocusStyle.bind(this)} onBlur={this.changeEmailBlurStyle.bind(this)} type="text" /> 
+                        </div>
+                        <div class={this.state.emailError}>
+                            آدرس ایمیل وارد شده معتبر نیست.
+                        </div>
+                    </div>
+                    <button id="usernamebutton" onClick={this.loginRegisterClick.bind(this)} class="login-register-button">ثبت نام</button>
+                    <a onClick={this.changeloginRegisterMode.bind(this)} class={this.state.loginchange}>
+                        .قبلاً در ترب حساب کاربری داشتم
+                    </a>
+                    <a onClick={this.changeloginRegisterMode.bind(this)} class={this.state.registerchange}>
+                        .حساب کاربری جدید می‌سازم
+                    </a>   
+                </div>
+                <div class="home-m">
+                    <Link to="/">
+                        <img src="https://torob.com/static/images/torob_logo.svg"/>
+                    </Link>
+                    <div class='search-m'>
+                        <input autocomplete="off" id="maxvalue" placeholder="نام کالا را وارد کنید" style={searchInputStyle_m.input} type="text" /> 
+                        <svg fill="#808080" class="search-svg-m" height="50" viewBox="0 0 24 24" width="50" xmlns="http://www.w3.org/2000/svg" title="search"> <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path> <path d="M0 0h24v24H0z" fill="none"></path> </svg>    
+                    </div>
+                </div>
+                <div class="navbar-bottom-m">
+                    <div onClick={this.userButtonClick.bind(this)} class="navbar-bottom-item-m">
+                        <svg stroke="currentColor" color="#808080" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="25px" width="25px" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        ترب من
+                    </div>
+                    <div class="navbar-bottom-item-m">
+                        <svg fill="#808080" class="search-svg-icon-m" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg" title="search"> <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path> <path d="M0 0h24v24H0z" fill="none"></path> </svg>    
+                        جستجو
+                    </div>
+                </div>        
+            </div>     
         )        
     }
 }
