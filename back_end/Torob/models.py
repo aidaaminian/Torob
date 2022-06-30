@@ -3,12 +3,14 @@ from django.db import models
 
 
 class Shop(models.Model):
+    shop_id = models.PositiveIntegerField(primary_key=True)
     name = models.CharField(null=True, blank=True, max_length=120)
     price = models.PositiveIntegerField(null=True, blank=True)
     link = models.URLField(null=True, blank=True, max_length=200)
 
 
 class Product(models.Model):
+    product_id = models.PositiveIntegerField(primary_key=True)
     name = models.CharField(null=True, blank=True, max_length=120)
     img_src = models.URLField(null=True, blank=True)
     min_price = models.PositiveIntegerField(null=True, blank=True)
