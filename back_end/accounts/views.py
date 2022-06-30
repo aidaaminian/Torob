@@ -6,14 +6,12 @@ from rest_framework.views import APIView
 
 from accounts.models import User
 from accounts.serializers import UserSerializer
+from browse.serializers import ProductSerializer
 
 login = obtain_auth_token
 
 
 class Logout(APIView):
-    """
-    Delete user's authtoken
-    """
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
@@ -22,9 +20,6 @@ class Logout(APIView):
 
 
 class Register(CreateAPIView):
-    """
-    Create a new user
-    """
     permission_classes = (AllowAny,)
 
     def post(self, request, *args, **kwargs):
@@ -32,6 +27,7 @@ class Register(CreateAPIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
+        return Response({'message': serializer.errors}, status=400)
 
 
 class UpdateUser(APIView):
@@ -50,3 +46,15 @@ class UpdateUser(APIView):
             return Response({'message': 'User updated successfully!'}, status=200)
 
         return Response({'message': user_serializer.errors}, status=400)
+
+
+class CreateProduct(CreateAPIView):
+    # permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response({'message': serializer.errors}, status=400)

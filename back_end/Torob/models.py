@@ -21,5 +21,5 @@ class Product(models.Model):
     internal_storage = models.IntegerField(null=True, blank=True)
     weight = models.IntegerField(null=True, blank=True)
     warranty = models.IntegerField(null=True, blank=True)
-    color = models.CharField(max_length=50)
-    shops = models.ManyToManyField(Shop)
+    color = models.CharField(max_length=50, null=True, blank=True)
+    shops = models.ManyToManyField(Shop, blank=True)
