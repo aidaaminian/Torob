@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('browse.urls')),
     path('', include('accounts.urls')),
+    path('', include('Torob.urls')),
 ]

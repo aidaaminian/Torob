@@ -19,3 +19,4 @@ def get_single_product(request, product_id):
     prod1 = Product.objects.get(product_id=product_id)
     serializer = ProductSerializer(prod1, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
+

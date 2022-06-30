@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from accounts.models import User
+
 
 class Shop(models.Model):
     shop_id = models.PositiveIntegerField(primary_key=True)
@@ -23,3 +25,14 @@ class Product(models.Model):
     warranty = models.IntegerField(null=True, blank=True)
     color = models.CharField(max_length=50, null=True, blank=True)
     shops = models.ManyToManyField(Shop, blank=True)
+
+
+class Complaint(models.Model):
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = (
+        ("a", "NotRelated"),
+        ("b", "IncorrectData"),
+        ("c", "FollowUp")
+    )
