@@ -2,12 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-# Create your models here.
-class User(AbstractUser):
-    email = models.EmailField(null=True, blank=True)
-    phone = models.CharField(null=True, blank=True, max_length=15)
-
-
 class Product(models.Model):
     name = models.CharField(null=True, blank=True, max_length=120)
     img_src = models.URLField(null=True, blank=True)
