@@ -8,5 +8,4 @@ urlpatterns = [
     path('login/', login),
     path('logout/', csrf_exempt(Logout.as_view())),
     path('register/', csrf_exempt(Register.as_view())),
-    # Add Logout & Register
 ]
