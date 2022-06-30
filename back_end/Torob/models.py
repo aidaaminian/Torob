@@ -2,6 +2,12 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
+class Shop(models.Model):
+    name = models.CharField(null=True, blank=True, max_length=120)
+    price = models.PositiveIntegerField(null=True, blank=True)
+    link = models.URLField(null=True, blank=True, max_length=200)
+
+
 class Product(models.Model):
     name = models.CharField(null=True, blank=True, max_length=120)
     img_src = models.URLField(null=True, blank=True)
@@ -14,9 +20,4 @@ class Product(models.Model):
     weight = models.IntegerField(null=True, blank=True)
     warranty = models.IntegerField(null=True, blank=True)
     color = models.CharField(max_length=50)
-
-
-class Shop(models.Model):
-    name = models.CharField(null=True, blank=True, max_length=120)
-    price = models.PositiveIntegerField(null=True, blank=True)
-    link = models.URLField(null=True, blank=True, max_length=200)
+    shops = models.ManyToManyField(Shop)
