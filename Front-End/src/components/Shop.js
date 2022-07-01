@@ -40,6 +40,9 @@ class Shop extends Component{
                             <Link to="/addproduct" class="add-product-shop-button">
                                 افزودن محصول
                             </Link>
+                            <Link to="/report" class="report-page-shop-button">
+                                صفحه گزارش‌ها
+                            </Link>
                         </div>
                     </div>
                 )

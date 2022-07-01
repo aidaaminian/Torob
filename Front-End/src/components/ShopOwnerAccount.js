@@ -101,7 +101,7 @@ class ShopOwnerAccount extends Component{
                             </div>
                             <div class="account-input-button">
                                 <button id="usernamebutton" onClick={this.userButtonClick.bind(this)} class="account-change-button">تغییر شماره</button>
-                                <div class="account-username-block"></div>
+                                <div class="account-username-block">{this.props.username}</div>
                             </div>
                         </div>
                         <div class="login-register-input-div">
@@ -129,7 +129,7 @@ class ShopOwnerAccount extends Component{
 }
 const mapStateToProps = (state) =>{
     return {
-
+        username : state.username
     }
 }
 export default connect(mapStateToProps)(ShopOwnerAccount)

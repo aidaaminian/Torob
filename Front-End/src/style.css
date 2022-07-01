@@ -226,6 +226,20 @@
     align-self: center;
 }
 
+.report-register-dialogue{
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    margin-top: 40px;
+    width: 70%;
+    border-radius: 4px;
+    font-family: iranyekan;
+    z-index: 3;
+    align-self: center;
+}
+
 .browse-page{
     display: flex;
     flex-direction: column;
@@ -235,7 +249,19 @@
 .login-register-close-flex{
     display: flex;
     height: 20px;
-    width: inherit;
+    width: 100%;
+}
+
+.report-register-close-flex{
+    display: flex;
+    height: 20px;
+    width: 50%;
+    margin-left: 40px;
+    margin-top: 10px;
+    justify-items: flex-start;
+    justify-content: space-between;
+    align-self: flex-start;
+    margin-bottom: 20px;
 }
 
 .login-register-close{
@@ -259,10 +285,25 @@
     text-align: center;
 }
 
+.report-register-title{
+    position: relative;
+    top: 10px;
+    width: 110px;
+    text-align: center;
+    font-weight: bold;
+}
+
 .login-register-line{
     background-color: var(--lightergrey);
     width: 350px;
     height: 1px; 
+}
+
+.register-register-line{
+    background-color: #f2f3f5;
+    width: 95%;
+    height: 1px;
+    margin-bottom: 10px; 
 }
 
 .login-register-input-label{
@@ -270,6 +311,29 @@
     font-weight: bold;
     padding-right: 10px;
     padding-bottom: 5px;
+}
+
+.report-content{
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+    align-items: flex-end;
+    padding-right: 20px;
+    row-gap: 12px;
+}
+
+.report-register-name-title{
+    direction: rtl;
+    font-weight: bold;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    padding-top: 10px;
+    font-size: 18px;
+}
+
+.report-product-image{
+    border: 1px solid #f2f3f5;
+    border-radius: 4px;
 }
 
 .login-register-button{
@@ -285,6 +349,19 @@
     cursor: pointer;
 }
 
+.report-register-button{
+    background-color: #4a90e2;
+    color: var(--white);
+    border: 0;
+    width: 100px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    height: 40px;
+    border-radius: 4px;
+    font-family: iranyekan;
+    cursor: pointer;
+}
+
 .login-register-change-mode{
     font-size: 11px;
     color: #4389c3;
@@ -294,6 +371,13 @@
 .login-register-input-div-home{
     margin-bottom: 10px;
     width: 80%;
+}
+
+.report-register-div{
+    display: flex;
+    margin-bottom: 10px;
+    width: 100%;
+    justify-content: flex-end;
 }
 
 .login-register-input-div{
@@ -557,12 +641,16 @@ nav{
     border-radius: 10px;
     padding: 15px;
     row-gap: 10px;
+    cursor: pointer;
 }
 
 .product-img-block{
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: inherit;
+    padding-left: 20px;
+    margin-bottom: 10px;
 }
 
 .product-detail{
@@ -570,6 +658,12 @@ nav{
     font-size: 14px;
     direction: rtl;
     margin-bottom: 30px;
+}
+
+.report-detail-block{
+    font-family: iranyekan;
+    font-size: 16px;
+    direction: rtl;
 }
 
 .product-price{
@@ -655,6 +749,14 @@ nav{
     display: flex;
     flex-direction: column;
     width: 55%;
+}
+
+.report:hover{
+    background-color: var(--greywhite);
+}
+
+.report:focus{
+    background-color: var(--greywhite);
 }
 
 .product-spcfs{
@@ -744,6 +846,19 @@ nav{
     padding-bottom: 30px;
 }
 
+.report-cart{
+    background-color: var(--white);
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 30px;
+    padding-right: 25px;
+    padding-left: 25px;
+    margin-bottom: 1px;
+    padding-bottom: 30px;
+}
+
 .spcfc-detail{
     font-size: 14px;
     font-weight: bold;
@@ -801,13 +916,18 @@ nav{
     color: #333333;
     background-color: var(--white);
     width: 231px;
-    height: 400px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     border-radius: 10px;
     padding: 15px;
     row-gap: 10px;
+    cursor: pointer;
+}
+
+.favorite-link{
+    text-decoration: none;
+    color: #333333;
 }
 
 .resgister-page{
@@ -823,6 +943,15 @@ nav{
 .register-return{
     font-family: iranyekan;
     width: 400px;
+    display: flex;
+    column-gap: 2px;
+    justify-content: flex-end;
+    font-size: 16px;
+}
+
+.report-return{
+    font-family: iranyekan;
+    width: 80%;
     display: flex;
     column-gap: 2px;
     justify-content: flex-end;
@@ -921,6 +1050,30 @@ nav{
     border: 0;
     height: 35px;
     margin-left: 40px;
+    border-radius: 4px;
+    font-family: iranyekan;
+    cursor: pointer; 
+    padding: 5px 25px;
+}
+
+.report-container{
+    background-color: var(--white);
+    width: 80%;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 30px;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+.report-page-shop-button{
+    background-color: #ccc;
+    color: var(--white);
+    border: 0;
+    height: 35px;
+    margin-left: 20px;
     border-radius: 4px;
     font-family: iranyekan;
     cursor: pointer; 
@@ -1235,6 +1388,19 @@ nav{
     color: #ccc;
 }
 
+.report-checkbox{
+    display: flex;
+    column-gap: 10px;
+}
+
+.checkbox-text-report{
+    font-family: iranyekan;
+    font-size: 14px;
+    direction: rtl;
+    align-self: flex-start;
+    padding-top: 2px;
+}
+
 .category-detail-block:active{
     background-color: unset;
 }
@@ -1492,6 +1658,10 @@ nav{
 .search-svg{
     margin-top: 7px;
     margin-right: 10px;
+}
+
+.favorite-svg{
+    z-index: 2;
 }
 
 .search-svg-m{

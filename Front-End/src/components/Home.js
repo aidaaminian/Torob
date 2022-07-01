@@ -35,7 +35,7 @@ const nameinputStyle = {
         border: 0,
         "padding-left": "10px",
         height: "26px",
-        width:"300px",
+        width:"95.7%",
         "padding-bottom": "0px",
         fontFamily: "iranyekan",
     }

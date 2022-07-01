@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+const empty ="M21.233 3.881C20.077 2.693 18.535 2 16.898 2a6.268 6.268 0 0 0-4.433 1.881l-.385.396-.385-.396a6.104 6.104 0 0 0-8.768 0C1.674 5.07 1 6.752 1 8.436c0 1.683.674 3.366 1.83 4.554l8.48 8.713c.192.198.385.297.674.297.289 0 .481-.099.674-.297l8.479-8.713c1.156-1.188 1.83-2.871 1.83-4.554.193-1.684-.481-3.367-1.734-4.555zm-1.349 7.723l-7.804 8.02-7.804-8.02c-.867-.891-1.253-1.98-1.253-3.168 0-1.188.482-2.278 1.253-3.169.77-.89 1.927-1.287 2.987-1.287 1.156 0 2.216.396 3.083 1.287l1.06 1.09a.914.914 0 0 0 1.349 0l.963-1.09c.867-.792 1.927-1.287 3.18-1.287 1.156 0 2.216.495 3.083 1.287.77.891 1.252 1.98 1.252 3.169 0 1.188-.482 2.277-1.349 3.168z"
+const fill ="M21.233 3.881C20.077 2.693 18.535 2 16.898 2a6.268 6.268 0 0 0-4.433 1.881l-.385.396-.385-.396a6.104 6.104 0 0 0-8.768 0C1.674 5.07 1 6.752 1 8.436c0 1.683.674 3.366 1.83 4.554l8.48 8.713c.192.198.385.297.674.297.289 0 .481-.099.674-.297l8.479-8.713c1.156-1.188 1.83-2.871 1.83-4.554.193-1.684-.481-3.367-1.734-4.555z"
+
 const nameinputStyle = {
     input: {
         color: "black",
@@ -147,7 +150,8 @@ class Browse extends Component{
                         internal_storage: '256 گیگابایت',
                         weight: '240 گرم',
                         warranty: 'گارانتی 18 ماهه',
-                        color: 'نقره‌ای'
+                        color: 'نقره‌ای',
+                        favorite: true
                     },
                     {
                         img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
@@ -160,7 +164,8 @@ class Browse extends Component{
                         internal_storage: '256 گیگابایت',
                         weight: '240 گرم',
                         warranty: 'گارانتی 18 ماهه',
-                        color: 'نقره‌ای'
+                        color: 'نقره‌ای',
+                        favorite: false
                     },
                     {
                         img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
@@ -511,20 +516,22 @@ class Browse extends Component{
             (  
                 this.state.items.map((item) => {
                     return(
-                        <Link key = {item.id} to="/products/0" class="product-card"> 
-                            <div class="product-img-block">
-                                <img src={item.img_src}></img>
-                            </div>
-                            <div class="product-detail">
-                                {item.name}
-                            </div>
-                            <div class="product-price">
-                                از {item.min_price} تومان   
-                            </div>
-                            <Link to={window.location.pathname} class="favorite">
-                                <svg id="favoritesvg" class="favoritesvg" onClick={this.setFavoriteClick(item.id)} fill={this.state.favoriteClickColor} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی"><g><path d="M21.233 3.881C20.077 2.693 18.535 2 16.898 2a6.268 6.268 0 0 0-4.433 1.881l-.385.396-.385-.396a6.104 6.104 0 0 0-8.768 0C1.674 5.07 1 6.752 1 8.436c0 1.683.674 3.366 1.83 4.554l8.48 8.713c.192.198.385.297.674.297.289 0 .481-.099.674-.297l8.479-8.713c1.156-1.188 1.83-2.871 1.83-4.554.193-1.684-.481-3.367-1.734-4.555zm-1.349 7.723l-7.804 8.02-7.804-8.02c-.867-.891-1.253-1.98-1.253-3.168 0-1.188.482-2.278 1.253-3.169.77-.89 1.927-1.287 2.987-1.287 1.156 0 2.216.396 3.083 1.287l1.06 1.09a.914.914 0 0 0 1.349 0l.963-1.09c.867-.792 1.927-1.287 3.18-1.287 1.156 0 2.216.495 3.083 1.287.77.891 1.252 1.98 1.252 3.169 0 1.188-.482 2.277-1.349 3.168z"></path></g></svg>
-                            </Link> 
-                        </Link>
+                        <div key = {item.id} class="product-card">
+                            <Link to="/products/0" class="favorite-link">
+                                <div>
+                                    <img src={item.img_src}></img>
+                                </div>
+                                <div class="product-detail">
+                                    {item.name}
+                                </div>
+                                <div class="product-price">
+                                    از {item.min_price} تومان
+                                </div>    
+                            </Link>
+                            <div class="favorite">
+                            <svg fill={item.favorite? "#d73948" : "#999"} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی"><g><path d={item.favorite? fill : empty}></path></g></svg>
+                            </div> 
+                        </div>
                     )
                 })
             ):

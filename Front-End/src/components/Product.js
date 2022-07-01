@@ -75,7 +75,9 @@ class Product extends Component{
             userdropdown: 'displaynone',
             usernameError: 'displaynone',
             passwordError: 'displaynone',
-            emailError: 'displaynone'
+            emailError: 'displaynone',
+            report_on: false,
+            shop_id: null
         };
     }
 
@@ -117,6 +119,7 @@ class Product extends Component{
             }
         ]
         })
+        this.showReport = this.showReport.bind(this)
     }
     
     mobileDropdown(){
@@ -238,6 +241,7 @@ class Product extends Component{
 
     removeClick(){
         this.state.dim === 'dim' ? this.setState({dim: ''}) : this.setState({})
+        this.state.report_on ? this.setState({report_on: ~this.state.report_on}) : this.setState({})
         this.state.mtdisp === 'disp-nav' ? this.setState({mtdisp: 'displaynone'}) : this.setState({})
         this.state.laptopdisp === 'disp-nav' ? this.setState({laptopdisp: 'displaynone'}) : this.setState({})
         this.state.userdropdown === 'user-dropdown-nav' ? this.setState({userdropdown: 'displaynone'}) : this.setState({})
@@ -327,6 +331,12 @@ class Product extends Component{
         this.setState({searchblock: 'displaynone'})
     }
 
+    showReport(){
+        this.setState({
+            report_on: ~this.state.report_on
+        })
+    }
+
     render(){
         let userbuttonname = this.props.username ? this.props.username : "ورود / ثبت نام"
         let head = this.state.item.head
@@ -385,7 +395,7 @@ class Product extends Component{
                         <div class="prdocut-detail-block">
                             {shop.name}    
                         </div>
-                        <button class="report">
+                        <button class="report" onClick={this.showReport}>
                             گزارش 
                             <img src="https://torob.com/static/images/flag_white.png" height="16" width="16" alt="price report" id="report-img" class="jsx-2827249071"></img>   
                         </button>
@@ -409,7 +419,7 @@ class Product extends Component{
         )
         return(
             (
-                <body class="browse-page">
+                <body class='browse-page'>
                     <div class={this.state.loginregisterdialogue}>
                         <div class="login-register-close-flex">
                             <div onClick={this.removeClick.bind(this)} class="login-register-close">
@@ -470,7 +480,49 @@ class Product extends Component{
                             .حساب کاربری جدید می‌سازم
                         </a>   
                     </div>
-                    <div onClick={this.removeClick.bind(this)} class={this.state.dim}>    
+                    <div class={this.state.report_on ? 'report-register-dialogue' : 'displaynone'}>
+                        <div class="report-register-close-flex">
+                            <div onClick={this.removeClick.bind(this)} class="login-register-close">
+                                ×
+                            </div>
+                            <div class="report-register-title">
+                                گزارش مشکل
+                            </div>
+                        </div>
+                        <div class="register-register-line">
+                        </div>
+                        <div class="report-content">
+                            <div class="report-register-div">
+                                <div class="report-register-name-title">
+                                    {this.state.shop_id}
+                                </div>
+                                <img src="https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg" width="120" height="120" class="report-product-image"></img>
+                            </div>
+                            به چه مشکلی برخوردید؟
+                            <div class="report-checkbox">
+                                <div class="checkbox-text-report">
+                                    این کالا مربوط به این صفحه نیست.
+                                </div>
+                                <label> 
+                                    <input type="checkbox" onClick={this.changePasswordType.bind(this)}/>
+                                    <span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="report-checkbox">
+                                <div class="checkbox-text-report">
+                                    قیمت یا موجودی صحیح نیست.
+                                </div>
+                                <label> 
+                                    <input type="checkbox" onClick={this.changePasswordType.bind(this)}/>
+                                    <span>
+                                    </span>
+                                </label>
+                            </div>
+                            <button id="report-button" onClick={this.loginRegisterClick.bind(this)} class="report-register-button">ثبت گزارش</button>   
+                        </div>
+                    </div>
+                    <div onClick={this.removeClick.bind(this)} class={this.state.report_on ? 'dim' : this.state.dim }>    
                         <nav>
                             <div class="navtop">
                                 <div class="nav-dropdown">
