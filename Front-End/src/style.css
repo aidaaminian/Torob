@@ -1332,8 +1332,8 @@ nav{
     direction: rtl;
     color: #d73948;
     font-size: 12px;
-    width: 310px;
     padding-top: 5px;
+    width: 100%;
 }
 
 .search-block{

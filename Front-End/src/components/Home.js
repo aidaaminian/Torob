@@ -149,47 +149,90 @@ class Home extends Component{
 
     loginRegisterClick() {
         let allow = true
-        if (!hasLowerCase(document.getElementById("password").value)){
-            this.setState({passwordError: 'error-block'})
-            allow = false
+        if(this.state.loginchange === 'login-register-change-mode'){
+            if (!hasLowerCase(document.getElementById("password").value)){
+                this.setState({passwordError: 'error-block'})
+                allow = false
+            }
+            else
+                this.setState({passwordError: 'displaynone'})
+            if (!hasUpperCase(document.getElementById("password").value)){
+                this.setState({passwordError: 'error-block'})
+                allow = false
+            }
+            else
+                this.setState({passwordError: 'displaynone'})
+            if (!hasMoreThan7letter(document.getElementById("password").value)){
+                this.setState({passwordError: 'error-block'})
+                allow = false
+            }
+            else
+                this.setState({passwordError: 'displaynone'})
+            if (!hasEmailForm(document.getElementById("email").value)){
+                this.setState({emailError: 'error-block'})
+                allow = false
+            }
+            else
+                this.setState({emailError: 'displaynone'})
+            if(allow){
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "username": document.getElementById("username").value,
+                        "password": document.getElementById("password").value,
+                        "email": document.getElementById("email").value,
+                        "phone_number": Number(document.getElementById("phonenumber").value)})
+                };
+                fetch('http://127.0.0.1:8000/register/', requestOptions)
+                    .then((res) => {
+                        if(res.status === 400) {this.setState({usernameError: 'error-block'})}
+                        else this.props.changeUsername(document.getElementById("username").value)
+                        }
+                    ).then((json) => {
+                        
+                    })
+            }
         }
-        else
-            this.setState({passwordError: 'displaynone'})
-        if (!hasUpperCase(document.getElementById("password").value)){
-            this.setState({passwordError: 'error-block'})
-            allow = false
-        }
-        else
-            this.setState({passwordError: 'displaynone'})
-        if (!hasMoreThan7letter(document.getElementById("password").value)){
-            this.setState({passwordError: 'error-block'})
-            allow = false
-        }
-        else
-            this.setState({passwordError: 'displaynone'})
-        if (!hasEmailForm(document.getElementById("email").value)){
-            this.setState({emailError: 'error-block'})
-            allow = false
-        }
-        else
-            this.setState({emailError: 'displaynone'})
-        if(allow){
-            this.props.changeUsername(document.getElementById("username").value)
-            const requestOptions = {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    "username": document.getElementById("username").value,
-                    "password": document.getElementById("password").value,
-                    "phone_number": document.getElementById("phonenumber").value,
-                    "email": document.getElementById("email").value
-                })
-            };
-            fetch('http://127.0.0.1:8000/register/', requestOptions)
-                .then(response => response.json())
-                .then(json => this.setState({ registered: json.id }) );
+        else{
+            if (!hasLowerCase(document.getElementById("password").value)){
+                this.setState({passwordError: 'error-block'})
+                allow = false
+            }
+            else
+                this.setState({passwordError: 'displaynone'})
+            if (!hasUpperCase(document.getElementById("password").value)){
+                this.setState({passwordError: 'error-block'})
+                allow = false
+            }
+            else
+                this.setState({passwordError: 'displaynone'})
+            if (!hasMoreThan7letter(document.getElementById("password").value)){
+                this.setState({passwordError: 'error-block'})
+                allow = false
+            }
+            if(allow){
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "username": document.getElementById("username").value,
+                        "password": document.getElementById("password").value
+                    })
+                };
+                fetch('http://127.0.0.1:8000/login/', requestOptions)
+                    .then((res) => {
+                        if(res.status === 400) {this.setState({usernameError: 'error-block'})}
+                        else this.props.changeUsername(document.getElementById("username").value)
+                        }
+                    ).then((json) => {
+                        
+                    })
+            }
         }
     }
 
@@ -282,7 +325,7 @@ class Home extends Component{
                             نام کاربری قبلا استفاده شده است.
                         </div>
                     </div>
-                    <div class="login-register-input-div-home">
+                    <div class={this.state.loginchange !== 'displaynone' ? "login-register-input-div-home" : "displaynone"}>
                         <div class="login-register-input-label">
                             شماره موبایل 
                         </div>
