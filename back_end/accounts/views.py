@@ -39,6 +39,7 @@ class UpdateUser(APIView):
         print("request.data.username " + request.data["username"])
         user = get_object_or_404(User, username=request.data["username"])
         print("user_id ", user.id)
+        print("favorites ", user.favorites)
         user_serializer = UserSerializer(
             instance=user,
             data=request.data,

@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from Torob.models import Complaint
-from Torob.serializers import ComplaintSerializer
+from Torob.serializers import ComplaintSerializer, ShopSerializer
 
 
 class CreateComplaint(CreateAPIView):
@@ -15,6 +15,17 @@ class CreateComplaint(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = ComplaintSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response({'message': serializer.errors}, status=400)
+
+
+class CreateShop(CreateAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        serializer = ShopSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
