@@ -75,7 +75,8 @@ class Home extends Component{
             passwordError: 'displaynone',
             emailError: 'displaynone',
             searchblock: 'displaynone',
-            searchItems: []
+            searchItems: [],
+            registered: false
         };
     }
 
@@ -172,8 +173,24 @@ class Home extends Component{
         }
         else
             this.setState({emailError: 'displaynone'})
-        if(allow)
+        if(allow){
             this.props.changeUsername(document.getElementById("username").value)
+            const requestOptions = {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    "username": document.getElementById("username").value,
+                    "password": document.getElementById("password").value,
+                    "phone_number": document.getElementById("phonenumber").value,
+                    "email": document.getElementById("email").value
+                })
+            };
+            fetch('http://127.0.0.1:8000/register/', requestOptions)
+                .then(response => response.json())
+                .then(json => this.setState({ registered: json.id }) );
+        }
     }
 
     closeClick(){
@@ -192,6 +209,14 @@ class Home extends Component{
 
     changeUsernameBlurStyle(){
         document.getElementById("username").style.border = "0"; 
+    }
+
+    changePhoneNumberFocusStyle(){
+        document.getElementById("phonenumber").style.border = "2px solid black"; 
+    }
+
+    changePhoneNumberBlurStyle(){
+        document.getElementById("phonenumber").style.border = "0"; 
     }
 
     changePasswordFocusStyle(){
@@ -241,20 +266,28 @@ class Home extends Component{
                     </div>
                     <div class="login-register-div">
                         <div class="login-register-title">
-                            ورود یا ثبت نام
+                            ورود یا ثبت نام{ this.state.registered }
                         </div>
                         <div class="login-register-line">
                         </div>
                     </div>
                     <div class="login-register-input-div-home">
                         <div class="login-register-input-label">
-                            نام کاربری
+                            نام کاربری{}
                         </div>
                         <div class="input-block">
                             <input autocomplete="off" id="username" onFocus={this.changeUsernameFocusStyle.bind(this)} onBlur={this.changeUsernameBlurStyle.bind(this)} style={nameinputStyle.input} type="text" /> 
                         </div>
                         <div class={this.state.usernameError}>
                             نام کاربری قبلا استفاده شده است.
+                        </div>
+                    </div>
+                    <div class="login-register-input-div-home">
+                        <div class="login-register-input-label">
+                            شماره موبایل 
+                        </div>
+                        <div class="input-block">
+                            <input autocomplete="off" id="phonenumber" onFocus={this.changePhoneNumberFocusStyle.bind(this)} onBlur={this.changePhoneNumberBlurStyle.bind(this)} style={nameinputStyle.input} type="text" /> 
                         </div>
                     </div>
                     <div class="login-register-input-div-home">
