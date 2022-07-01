@@ -17,24 +17,28 @@ const inputStyle = {
 
 class NewShop extends Component{
 
-    constructor(props) {
-        super(props);
-   
-        this.state = {
+    buttonClick () {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': "Token " + this.props.token
+            },
+            body: JSON.stringify({
+                "name": document.getElementById("name").value,
+                "link": "https://"+ document.getElementById("address").value
+            })
         };
-    }
-
-    componentDidMount() {
-        
-        this.setState({
-        })
-            
-    }
-    
-
-    buttonClick(){
-        this.setState({
-        })
+        fetch('http://127.0.0.1:8000/addshop/', requestOptions)
+            .then((res) => {
+                if(res.status === 400) {}
+                else {}
+                }
+            ).then((json) => {
+                {   
+                    
+                }  
+            })
     }
 
     changeNameFocusStyle(){
@@ -70,7 +74,7 @@ class NewShop extends Component{
                             </div>
                             <div class="login-register-input-div">
                                 <div class="resgister-input-label">
-                                    نام کاربری
+                                    نام فروشگاه
                                 </div>
                                 <input autoComplete='off' id="name" onFocus={this.changeNameFocusStyle.bind(this)} onBlur={this.changeNameBlurStyle.bind(this)} style={inputStyle.input}/> 
                             </div>
@@ -88,8 +92,10 @@ class NewShop extends Component{
         )        
     }          
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = (state)=>{
     return {
+      username: state.username,
+      token: state.token
     }
 }
 export default connect(mapStateToProps)(NewShop)

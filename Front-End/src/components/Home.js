@@ -189,7 +189,7 @@ class Home extends Component{
                 fetch('http://127.0.0.1:8000/register/', requestOptions)
                     .then((res) => {
                         if(res.status === 400) {this.setState({usernameError: 'error-block'})}
-                        else this.props.changeUsername(document.getElementById("username").value)
+                        else this.props.changeUsername(document.getElementById("username").value, null)
                         }
                     ).then((json) => {
                         
@@ -226,18 +226,20 @@ class Home extends Component{
                 };
                 fetch('http://127.0.0.1:8000/login/', requestOptions)
                     .then((res) => {
-                        if(res.status === 400) {this.setState({usernameError: 'error-block'})}
-                        else this.props.changeUsername(document.getElementById("username").value)
+                        if(res.status === 400) this.setState({usernameError: 'error-block'})
+                        else return res.json() 
                         }
                     ).then((json) => {
-                        
-                    })
+                        {   
+                            this.props.changeUsername(document.getElementById("username").value, json.token) 
+                        }  
+                    })  
             }
         }
     }
 
     closeClick(){
-        this.props.changeUsername(null)
+        this.props.changeUsername(null, null)
     }
 
     changeloginRegisterMode(){
@@ -564,12 +566,13 @@ class Home extends Component{
 }
 const mapStateToProps = (state)=>{
     return {
-      username: state.username
+      username: state.username,
+      token: state.token
     }
 }
 const mapDispatchToProps = (dispatch)=>{
     return{
-        changeUsername: (id) => {dispatch(changeUsername(id))}
+        changeUsername: (username, token) => {dispatch(changeUsername(username, token))}
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

@@ -9,27 +9,38 @@ class Shop extends Component{
         super(props);
    
         this.state = {
-
+            shops: []
         };
-
     }
 
     componentDidMount() {
         
-        this.setState({
-            shops: [{
-                name: 'تکنولایف',
-                price: '۵۱٫۸۹۹٫۰۰۰ تومان',
-                link: 'https://banekala.ir/ProductDetail/11586/Apple-iPhone-13-Pro-Max-JA-Tak-SIM-256GB-NotActive/?utm_medium=PPC&utm_source=Torob'
-            }]
+
+        const requestOptions = {
+            method: 'GET',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + this.props.token 
             }
-        );
-        
+            };
+
+        fetch('http://127.0.0.1:8000/shops/', requestOptions)
+            .then((res) => {
+                if(res.status === 400) {}
+                else { return res.json() }
+                }
+            ).then((json) => {
+                {   
+                    this.setState({
+                        shops: json
+                    });
+                }  
+            })   
             
     }
     
     render(){
-        let shop_blocks = this.state.shops ? (
+        let shop_blocks = this.state ? (
             this.state.shops.map((item) => {
                 return(
                     <div class="shop-container">
@@ -72,9 +83,11 @@ class Shop extends Component{
         )        
     }          
 }
-const mapStateToProps = (state) =>{
+
+const mapStateToProps = (state)=>{
     return {
-        username: state.username
+      token: state.token,
     }
 }
+
 export default connect(mapStateToProps)(Shop)
