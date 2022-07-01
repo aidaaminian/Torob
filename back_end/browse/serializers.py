@@ -28,7 +28,7 @@ class ShoppingDetailSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    shops = ShoppingDetailSerializer(read_only=True, many=True)
+    shops = ShopSerializer(read_only=True, many=True)
 
     class Meta:
         model = Product
