@@ -34,7 +34,11 @@ class UpdateUser(APIView):
     permission_classes = (IsAuthenticated,)
 
     def put(self, request, *args, **kwargs):
-        user = get_object_or_404(User, username=request.data.username)
+        for key, value in request.data.items():
+            print(key, value)
+        print("request.data.username " + request.data["username"])
+        user = get_object_or_404(User, username=request.data["username"])
+        print("user_id ", user.id)
         user_serializer = UserSerializer(
             instance=user,
             data=request.data,
@@ -43,14 +47,13 @@ class UpdateUser(APIView):
 
         if user_serializer.is_valid():
             user_serializer.save()
-            return Response({'message': 'User updated successfully!'}, status=200)
+            return Response(user_serializer.data, status=200)
 
         return Response({'message': user_serializer.errors}, status=400)
 
 
 class CreateProduct(CreateAPIView):
-    # permission_classes = (IsAuthenticated,)
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         serializer = ProductSerializer(data=request.data)
