@@ -20,7 +20,7 @@ const searchInputStyle_m = {
         backgroundColor: "#f2f3f5",
         border: 0,
         height: "43px",
-        width:"380px",
+        width:"100%",
         fontFamily: "iranyekan",
         "font-size": "16px",
         "padding-bottom": "2px",
@@ -262,7 +262,7 @@ class Home extends Component{
                             رمز عبور
                         </div>
                         <div class="input-block">
-                            <input id="password" onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" /> 
+                            <input id="password" autoComplete='off' onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" /> 
                         </div>
                         <label>
                             <input type="checkbox" onClick={this.changePasswordType.bind(this)}/>
@@ -409,7 +409,7 @@ class Home extends Component{
                             ×
                         </div>
                     </div>
-                    <div class="login-register-div">
+                    <div class="login-register-input-div-home">
                         <div class="login-register-title">
                             ورود یا ثبت نام
                         </div>
@@ -432,7 +432,7 @@ class Home extends Component{
                             رمز عبور
                         </div>
                         <div class="input-block">
-                            <input id="password" onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" /> 
+                            <input id="password" autoComplete='off'onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" /> 
                         </div>
                         <label>
                             <input type="checkbox" onClick={this.changePasswordType.bind(this)}/>

@@ -12,7 +12,7 @@ const nameinputStyle = {
         border: 0,
         "padding-left": "10px",
         height: "26px",
-        width:"300px",
+        width:"100%",
         "padding-bottom": "0px",
         fontFamily: "iranyekan",
     }
@@ -68,7 +68,7 @@ const searchinputStyle = {
         border:"0",
         fontFamily: "iranyekan",
         direction: "rtl",
-        width: "402px",
+        width: "100%",
         height: "41px",
         "padding-bottom" : "2px",
         "border-radius": "4px",
@@ -254,7 +254,10 @@ class Browse extends Component{
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ productid: id })
+            body: JSON.stringify({ 
+                userid: this.props.username,
+                productid: id
+            })
         };
         fetch('"http://localhost:3000/api/favorites/:userid', requestOptions)
         .then(response => response.json())
@@ -569,7 +572,7 @@ class Browse extends Component{
                             رمز عبور
                         </div>
                         <div class="input-block">
-                            <input id="password" onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" /> 
+                            <input id="password" autoComplete='off'onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" /> 
                         </div>
                         <label>
                             <input type="checkbox" onClick={this.changePasswordType.bind(this)}/>
@@ -892,17 +895,17 @@ class Browse extends Component{
                             <div class={ this.state.priceDropdownClicked ? 'displaynone' : 'price-block' }>
                                 <div class="price-input-block">
                                     <div class="input-block-price">
-                                        <input autocomplete="off" id="maxvalue" defaultValue={maxValue} onInput={this.maxValueInput.bind(this)} style={priceInputStyle.input}/> 
-                                        <div class="input-block-text">
-                                            تا
-                                        </div>
-                                    </div>
-                                    <div class="input-block-price">
-                                        <input autocomplete="off" id="minvalue" defaultValue={minValue} onInput={this.minValueInput.bind(this)} style={priceInputStyle.input} /> 
+                                        <input autocomplete="off" id="minvalue" defaultValue={minValue} value={minValue} onInput={this.minValueInput.bind(this)} style={priceInputStyle.input} /> 
                                         <div class="input-block-text">
                                             از
                                         </div>
                                     </div>
+                                    <div class="input-block-price">
+                                        <input autocomplete="off" id="maxvalue" defaultValue={maxValue} value={maxValue} onInput={this.maxValueInput.bind(this)} style={priceInputStyle.input}/> 
+                                        <div class="input-block-text">
+                                            تا
+                                        </div>
+                                    </div>      
                                 </div>
                                 <button onClick={this.priceButtonClick.bind(this)} class="price-button">اعمال فیلتر قیمت</button>   
                             </div>

@@ -9,9 +9,9 @@ const inputStyle = {
         border:"1px solid #ccc",
         "border-radius": "4px",
         fontFamily: "iranyekan",
-        "padding-left": "10px",
+        "padding-left": "2%",
         height: "32px",
-        width:"310px"
+        width:"100%"
     }
 };
 
