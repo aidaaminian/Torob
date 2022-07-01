@@ -27,17 +27,25 @@ def get_single_product(request, product_id):
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny, ])
+@permission_classes([IsAuthenticated, ])
 def get_single_shop(request, shop_id):
     shop1 = Shop.objects.get(shop_id=shop_id)
     serializer = ShopSerializer(shop1, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, ])
+def get_shops(request):
+    shop1 = Shop.objects.filter()
+    serializer = ShopSerializer(shop1, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 @api_view(['POST'])
 @permission_classes([AllowAny, ])
 def search_product_by_name(request):
-    prods = Product.objects.filter(name__contains=request.data['name_part'])
+    prods = Product.objects.filter()
     serializer = ProductSerializer(prods, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
