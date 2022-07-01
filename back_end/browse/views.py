@@ -33,3 +33,11 @@ def get_single_shop(request, shop_id):
     serializer = ShopSerializer(shop1, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['POST'])
+@permission_classes([AllowAny, ])
+def search_product_by_name(request):
+    prods = Product.objects.filter(name__contains=request.data['name_part'])
+    serializer = ProductSerializer(prods, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
