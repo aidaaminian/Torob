@@ -8,6 +8,7 @@ from rest_framework.response import Response
 
 from Torob.models import Complaint
 from Torob.serializers import ComplaintSerializer, ShopSerializer
+from browse.serializers import ShoppingDetailSerializer
 
 
 class CreateComplaint(CreateAPIView):
@@ -32,9 +33,20 @@ class CreateShop(CreateAPIView):
         return Response({'message': serializer.errors}, status=400)
 
 
+class CreateShoppingDetail(CreateAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        serializer = ShoppingDetailSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response({'message': serializer.errors}, status=400)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, ])
 def get_shop_report(request, shop_id):
-    comps = Complaint.objects.filter(shop_id=shop_id)
+    comps = Complaint.objects.filter(shop__shop_id=shop_id)
     serializer = ComplaintSerializer(comps, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)

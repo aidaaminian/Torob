@@ -28,14 +28,14 @@ class Product(models.Model):
 
 class ShoppingDetail(models.Model):
     price = models.PositiveIntegerField(null=True, blank=True)
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
 
 
 class Complaint(models.Model):
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     DESC_CHOICES = [
         ('a', 'NotRelated'),
         ('b', 'IncorrectData'),

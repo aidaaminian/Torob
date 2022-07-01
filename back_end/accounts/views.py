@@ -6,10 +6,10 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from Torob.models import Product
+from Torob.models import Product, Shop, ShoppingDetail
 from accounts.models import User
 from accounts.serializers import UserSerializer
-from browse.serializers import ProductSerializer
+from browse.serializers import ProductSerializer, ShoppingDetailSerializer
 
 login = obtain_auth_token
 
@@ -102,4 +102,14 @@ def add_product_to_recent_view(request):
     prod1 = Product.objects.get(product_id=request.data['product_id'])
     user1.recent_views.add(prod1)
     serializer = UserSerializer(user1, many=False)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, ])
+def add_shopping_detail(request):
+    shop1 = Shop.objects.get(shop_id=request.data['shop_id'])
+    prod1 = Product.objects.get(product_id=request.data['product_id'])
+    shop_detail1 = ShoppingDetail.objects.create(shop=shop1, product=prod1, price=request.data['price'])
+    serializer = ShoppingDetailSerializer(shop_detail1, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
