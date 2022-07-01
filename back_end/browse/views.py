@@ -10,6 +10,22 @@ from browse.serializers import ProductSerializer, ShopSerializer
 
 @api_view(['GET'])
 @permission_classes([AllowAny, ])
+def get_category_products(request, head, category):
+    prods = Product.objects.filter(head=head, category=category)
+    serializer = ProductSerializer(prods, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny, ])
+def get_head_products(request, head):
+    prods = Product.objects.filter(head=head)
+    serializer = ProductSerializer(prods, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny, ])
 def get_products(request, head, category, sub_category):
     prods = Product.objects.filter(head=head, category=category, sub_category=sub_category)
     serializer = ProductSerializer(prods, many=True)
