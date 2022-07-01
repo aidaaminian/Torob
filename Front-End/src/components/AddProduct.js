@@ -11,7 +11,7 @@ const inputStyle = {
         fontFamily: "iranyekan",
         "padding-right": "10px",
         height: "32px",
-        width:"310px",
+        width:"98%",
         direction:"rtl"
     }
 };

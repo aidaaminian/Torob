@@ -22,7 +22,7 @@ const searchinputStyle = {
         border:"0",
         fontFamily: "iranyekan",
         direction: "rtl",
-        width: "402px",
+        width: "100%",
         height: "41px",
         "padding-bottom" : "2px",
         "border-radius": "4px",
@@ -449,7 +449,7 @@ class Product extends Component{
                                 رمز عبور
                             </div>
                             <div class="input-block">
-                                <input id="password" onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" /> 
+                                <input id="password" autoComplete='off'onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" /> 
                             </div>
                             <label>
                                 <input type="checkbox" onClick={this.changePasswordType.bind(this)}/>
@@ -649,8 +649,7 @@ class Product extends Component{
                                         {this.state.item.name}    
                                     </div>
                                     <div class="prdocut-price">
-                                        از {this.state.item.min_price} تومان تا {this.state.item.max_price} تومان 
-                                        
+                                        از {this.state.item.min_price} تومان تا {this.state.item.max_price} تومان                     
                                     </div>
                                 </div>
                                 <div class="product-img-block-gt">

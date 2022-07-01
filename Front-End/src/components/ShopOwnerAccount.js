@@ -11,7 +11,7 @@ const emailinputStyle = {
         fontFamily: "iranyekan",
         "padding-left": "10px",
         height: "32px",
-        width:"76%"
+        width:"88%"
     }
 };
 
@@ -26,7 +26,7 @@ const nameinputStyle = {
         "padding-left": "10px",
         "padding-bottom": "2px",
         height: "34px",
-        width:"98%"
+        width:"98.5%"
     }
 };
 
