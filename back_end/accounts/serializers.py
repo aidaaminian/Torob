@@ -1,14 +1,17 @@
 from rest_framework import serializers
 
+from browse.serializers import ProductSerializer
 from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    favorites = ProductSerializer(read_only=True, many=True)
+    recent_views = ProductSerializer(read_only=True, many=True)
 
     class Meta:
         model = User
-        fields = ("id", "username", "password", "email", "phone_number")
+        fields = ("id", "username", "password", "email", "phone_number", "favorites", "recent_views")
 
     def create(self, validated_data):
         user = User.objects.create_user(

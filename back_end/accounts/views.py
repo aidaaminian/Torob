@@ -1,9 +1,12 @@
+from rest_framework import status
 from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import CreateAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from Torob.models import Product
 from accounts.models import User
 from accounts.serializers import UserSerializer
 from browse.serializers import ProductSerializer
@@ -62,3 +65,41 @@ class CreateProduct(CreateAPIView):
             serializer.save()
             return Response(serializer.data, status=201)
         return Response({'message': serializer.errors}, status=400)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, ])
+def get_user_details(request, username):
+    user1 = User.objects.get(username=username)
+    serializer = UserSerializer(user1, many=False)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, ])
+def add_product_to_favorites(request):
+    user1 = User.objects.get(username=request.data['username'])
+    prod1 = Product.objects.get(product_id=request.data['product_id'])
+    user1.favorites.add(prod1)
+    serializer = UserSerializer(user1, many=False)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, ])
+def remove_product_from_favorites(request):
+    user1 = User.objects.get(username=request.data['username'])
+    prod1 = Product.objects.get(product_id=request.data['product_id'])
+    user1.favorites.remove(prod1)
+    serializer = UserSerializer(user1, many=False)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, ])
+def add_product_to_recent_view(request):
+    user1 = User.objects.get(username=request.data['username'])
+    prod1 = Product.objects.get(product_id=request.data['product_id'])
+    user1.recent_views.add(prod1)
+    serializer = UserSerializer(user1, many=False)
+    return Response(serializer.data, status=status.HTTP_200_OK)
