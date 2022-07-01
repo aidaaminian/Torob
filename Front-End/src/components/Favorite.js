@@ -79,61 +79,25 @@ class Mobiletablet extends Component{
             laptopdisp: 'displaynone'
         })
 
-        this.setState({
-            items: [{
-                img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                min_price: "۴۵٫۶۹۹٫۰۰۰",
-                max_price: "۵۸٫۵۰۰٫۰۰۰",
-                head: 'mobiletablet',
-                category: 'mobile',
-                sub_category: 'apple',
-                internal_storage: '256 گیگابایت',
-                weight: '240 گرم',
-                warranty: 'گارانتی 18 ماهه',
-                color: 'نقره‌ای'
+        const requestOptions = {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json'
             },
-            {
-                img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                min_price: "۴۵٫۶۹۹٫۰۰۰",
-                max_price: "۵۸٫۵۰۰٫۰۰۰",
-                head: 'mobiletablet',
-                category: 'mobile',
-                sub_category: 'apple',
-                internal_storage: '256 گیگابایت',
-                weight: '240 گرم',
-                warranty: 'گارانتی 18 ماهه',
-                color: 'نقره‌ای'
-            },
-            {
-                img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                min_price: "۴۵٫۶۹۹٫۰۰۰",
-                max_price: "۵۸٫۵۰۰٫۰۰۰",
-                head: 'mobiletablet',
-                category: 'mobile',
-                sub_category: 'apple',
-                internal_storage: '256 گیگابایت',
-                weight: '240 گرم',
-                warranty: 'گارانتی 18 ماهه',
-                color: 'نقره‌ای'
-            },{
-                img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                min_price: "۴۵٫۶۹۹٫۰۰۰",
-                max_price: "۵۸٫۵۰۰٫۰۰۰",
-                head: 'mobiletablet',
-                category: 'mobile',
-                sub_category: 'apple',
-                internal_storage: '256 گیگابایت',
-                weight: '240 گرم',
-                warranty: 'گارانتی 18 ماهه',
-                color: 'نقره‌ای'
-            }
-            ]
-        } )
-            
+            body: JSON.stringify({
+                "username": this.props.username,
+                "product_id": this.props.username
+            })
+        };
+        
+        fetch("http://localhost:3000/search/" + document.getElementById("searchinput").value
+            ).then((res) => res.json())
+            .then((json) => {
+                this.setState({
+                    searchItems: json
+                }
+            );
+        })
     }
     
     mobileDropdown(){

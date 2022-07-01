@@ -105,6 +105,7 @@ class Browse extends Component{
             usernameError: 'displaynone',
             passwordError: 'displaynone',
             emailError: 'displaynone',
+            user_favorites: null
         };
     }
 
@@ -118,11 +119,13 @@ class Browse extends Component{
             subcategory: this.props.match.params.subcategoryid,
         })
 
-        let followPath = null
+        let followPath = ""
         this.props.match.params.categoryid ? followPath += '/' + this.props.match.params.categoryid : followPath = followPath
         this.props.match.params.subcategoryid ? followPath += '/' + this.props.match.params.subcategoryid : followPath = followPath
 
-        fetch("http://localhost:3000/api/" + this.state.head + followPath
+        let head = this.props.match.params.headid ? this.props.match.params.headid : ""
+
+        fetch("http://127.0.0.1:8000/browse/" + head + followPath + "/"
             ).then((res) => res.json())
             .then((json) => {
                 this.setState({
@@ -130,71 +133,34 @@ class Browse extends Component{
                 }
             );
         })
-           this.setState({
-                    items: [{
-                        img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                        name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                        price: "از ۴۶٫۲۹۹٫۰۰۰ تومان"
-                    }
-                    ]
-                } )
-            this.setState({
-                    items: [{
-                        img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                        name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                        min_price: "۴۵٫۶۹۹٫۰۰۰",
-                        max_price: "۵۸٫۵۰۰٫۰۰۰",
-                        head: 'mobiletablet',
-                        category: 'mobile',
-                        sub_category: 'apple',
-                        internal_storage: '256 گیگابایت',
-                        weight: '240 گرم',
-                        warranty: 'گارانتی 18 ماهه',
-                        color: 'نقره‌ای',
-                        favorite: true
-                    },
-                    {
-                        img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                        name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                        min_price: "۴۵٫۶۹۹٫۰۰۰",
-                        max_price: "۵۸٫۵۰۰٫۰۰۰",
-                        head: 'mobiletablet',
-                        category: 'mobile',
-                        sub_category: 'apple',
-                        internal_storage: '256 گیگابایت',
-                        weight: '240 گرم',
-                        warranty: 'گارانتی 18 ماهه',
-                        color: 'نقره‌ای',
-                        favorite: false
-                    },
-                    {
-                        img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                        name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                        min_price: "۴۵٫۶۹۹٫۰۰۰",
-                        max_price: "۵۸٫۵۰۰٫۰۰۰",
-                        head: 'mobiletablet',
-                        category: 'mobile',
-                        sub_category: 'apple',
-                        internal_storage: '256 گیگابایت',
-                        weight: '240 گرم',
-                        warranty: 'گارانتی 18 ماهه',
-                        color: 'نقره‌ای'
-                    },{
-                        img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                        name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                        min_price: "۴۵٫۶۹۹٫۰۰۰",
-                        max_price: "۵۸٫۵۰۰٫۰۰۰",
-                        head: 'mobiletablet',
-                        category: 'mobile',
-                        sub_category: 'apple',
-                        internal_storage: '256 گیگابایت',
-                        weight: '240 گرم',
-                        warranty: 'گارانتی 18 ماهه',
-                        color: 'نقره‌ای'
-                    }
-                    ]
-                } )
+        
+        fetch("http://127.0.0.1:8000/profile/" + this.props.username + "/"
+            ).then((res) => res.json())
+            .then((json) => {
+                this.setState({
+                    user_favorites: json.favorites
+                }
+            );
+        })
     }
+    
+    componentDidUpdate(){
+        let followPath = ""
+        this.props.match.params.categoryid ? followPath += '/' + this.props.match.params.categoryid : followPath = followPath
+        this.props.match.params.subcategoryid ? followPath += '/' + this.props.match.params.subcategoryid : followPath = followPath
+
+        let head = this.props.match.params.headid ? this.props.match.params.headid : ""
+
+        fetch("http://127.0.0.1:8000/browse/" + head + followPath + "/"
+            ).then((res) => res.json())
+            .then((json) => {
+                this.setState({
+                    items: json
+                }
+            );
+        })
+    }
+    
     
     mobileDropdown(){
         let dispv = this.state.mtdisp === 'disp' ? 'displaynone': 'disp'
@@ -432,6 +398,24 @@ class Browse extends Component{
         })
     }
 
+    favorite = (productid) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "username": this.props.username,
+                "product_id": productid
+            })
+        };
+        
+        fetch("http://127.0.0.1:8000/addfavorite/", requestOptions)
+            .then((res) => res.json())
+            .then((json) => {
+            })
+    }
+
     render(){
         let userbuttonname = this.props.username ? this.props.username : "ورود / ثبت نام"
         let head = this.props.match.params.headid
@@ -518,9 +502,12 @@ class Browse extends Component{
         let addedItems = this.state.items ?
             (  
                 this.state.items.map((item) => {
+                    let favorite
+                    if(this.state.user_favorites)
+                        favorite = this.state.user_favorites.find((fav) => fav === item.product_id)
                     return(
                         <div key = {item.id} class="product-card">
-                            <Link to="/products/0" class="favorite-link">
+                            <Link to={"/products/" + item.product_id + "/"} class="favorite-link">
                                 <div>
                                     <img src={item.img_src}></img>
                                 </div>
@@ -532,7 +519,7 @@ class Browse extends Component{
                                 </div>    
                             </Link>
                             <div class="favorite">
-                            <svg fill={item.favorite? "#d73948" : "#999"} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی"><g><path d={item.favorite? fill : empty}></path></g></svg>
+                            <svg OnClick={this.favorite(item.product_id)} fill={favorite? "#d73948" : "#999"} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی"><g><path d={item.favorite? fill : empty}></path></g></svg>
                             </div> 
                         </div>
                     )

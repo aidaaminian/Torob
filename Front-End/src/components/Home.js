@@ -287,7 +287,7 @@ class Home extends Component{
 
     searchInput(){
         this.setState({searchblock: 'search-block'})
-        fetch("http://localhost:3000/api/" + document.getElementById("searchinput").value
+        fetch("http://localhost:3000/search/" + document.getElementById("searchinput").value
             ).then((res) => res.json())
             .then((json) => {
                 this.setState({

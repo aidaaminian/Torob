@@ -77,35 +77,22 @@ class Product extends Component{
             passwordError: 'displaynone',
             emailError: 'displaynone',
             report_on: false,
-            shop_id: null
+            shop_id: null,
+            Addeditem_img_src: null
         };
     }
 
-    // first time this component is mount, this function will execute
     componentDidMount() {
-        /*fetch("https://api.coingecko.com/api/v3/coins/" + this.params.productid
+        
+        fetch("http://127.0.0.1:8000/products/" + this.props.match.params.productid + "/"
             ).then((res) => res.json())
             .then((json) => {
                 this.setState({
-                    item: json
+                    Addeditem_img_src: json.img_src
                 }
             );
-        })*/
-        this.setState({
-            item: {
-                img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                min_price: "۴۵٫۶۹۹٫۰۰۰",
-                max_price: "۵۸٫۵۰۰٫۰۰۰",
-                head: 'mobiletablet',
-                category: 'mobile',
-                sub_category: 'apple',
-                internal_storage: '256 گیگابایت',
-                weight: '240 گرم',
-                warranty: 'گارانتی 18 ماهه',
-                color: 'نقره‌ای'
-            }
         })
+
         this.setState({
             shops : [{
                 name: 'تکنولایف',
@@ -419,7 +406,7 @@ class Product extends Component{
         )
         return(
             (
-                <body class='browse-page'>
+                <body class={this.state.Addeditem ?'browse-page':'dispaynone'}>{this.state.Addeditem}
                     <div class={this.state.loginregisterdialogue}>
                         <div class="login-register-close-flex">
                             <div onClick={this.removeClick.bind(this)} class="login-register-close">
@@ -496,7 +483,7 @@ class Product extends Component{
                                 <div class="report-register-name-title">
                                     {this.state.shop_id}
                                 </div>
-                                <img src="https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg" width="120" height="120" class="report-product-image"></img>
+                                <img src={this.state.Addeditem ? this.state.Addeditem_img_src: " "} width="120" height="120" class="report-product-image"></img>
                             </div>
                             به چه مشکلی برخوردید؟
                             <div class="report-checkbox">
@@ -653,7 +640,7 @@ class Product extends Component{
                                     </div>
                                 </div>
                                 <div class="product-img-block-gt">
-                                    <img src="https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/216x216.jpg"></img>
+                                    <img src={this.state.Addeditem ? this.state.Addeditem_img_src: ""} ></img>
                                 </div>  
                             </div>
                             <div class="shops-spcfs">

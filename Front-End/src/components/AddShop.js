@@ -26,7 +26,7 @@ class NewShop extends Component{
             },
             body: JSON.stringify({
                 "name": document.getElementById("name").value,
-                "link": "https://"+ document.getElementById("address").value
+                "link": document.getElementById("address").value
             })
         };
         fetch('http://127.0.0.1:8000/addshop/', requestOptions)
