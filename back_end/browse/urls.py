@@ -8,5 +8,5 @@ urlpatterns = [
     path('browse/<str:head>/', get_head_products),
     path('products/<int:product_id>/', get_single_product),
     path('shops/<int:shop_id>/', get_single_shop),
-    path('search/', search_product_by_name),
+    path('search/<str:part_name>/', search_product_by_name),
 ]

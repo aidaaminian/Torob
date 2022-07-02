@@ -287,9 +287,10 @@ class Home extends Component{
 
     searchInput(){
         this.setState({searchblock: 'search-block'})
-        fetch("http://localhost:3000/search/" + document.getElementById("searchinput").value
+        fetch("http://localhost:8000/search/" + document.getElementById("searchinput").value
             ).then((res) => res.json())
             .then((json) => {
+                console.log("search-json", json.length)
                 this.setState({
                     searchItems: json
                 }
@@ -297,7 +298,25 @@ class Home extends Component{
         })
     }
 
-    render(){  
+    render(){
+        let search_items_blocks = this.state.searchItems ?
+            (
+                this.state.searchItems.map((item) => {
+                    return(
+                        <div class="report-cart">
+                            <div class="prdocut-detail-block">
+                                <Link to={"/products/" + item.product_id + "/"}>
+                                        {item.name}
+                                </Link>
+                            </div>
+                         </div>
+                    )
+                })
+            ):
+            (
+                <div>
+                </div>
+            )
         const resolution = window.innerWidth;
         const isDesktop = resolution >= 768
         let loginregistervalue = this.props.username === null ? "ورود / ثبت نام" : this.props.username  
@@ -349,7 +368,7 @@ class Home extends Component{
                             </span>
                         </label>
                         <div class={this.state.passwordError}>
-                            رمز عبور باید دارای حداق ۸ حرف و شامل یک حرف بزرگ، یک حرف کوچک و یک عدد باشد.
+                            رمز عبور باید دارای حداقل ۸ حرف و شامل یک حرف بزرگ، یک حرف کوچک و یک عدد باشد.
                         </div>
                     </div>
                     <div class={this.state.emailClass}>
@@ -471,6 +490,7 @@ class Home extends Component{
                             <img class="serachicon" src="https://torob.com/static/images/search.svg"/>       
                         </div>
                         <div class={this.state.searchblock}>
+                            {search_items_blocks}
                         </div>
                     </div>
                     <div class="navbar-bottom">

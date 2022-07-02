@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
 from Torob.models import Complaint, Shop, Product
@@ -46,7 +46,7 @@ class CreateShoppingDetail(CreateAPIView):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated, ])
+@permission_classes([AllowAny, ])
 def get_shop_report(request, shop_id):
     comps = Complaint.objects.filter(shop__shop_id=shop_id)
     serializer = ComplaintSerializer(comps, many=True)

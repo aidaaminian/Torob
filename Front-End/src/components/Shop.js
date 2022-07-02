@@ -42,16 +42,24 @@ class Shop extends Component{
     render(){
         let shop_blocks = this.state ? (
             this.state.shops.map((item) => {
+                console.log("shops--shop_id " + item.shop_id)
                 return(
                     <div class="shop-container">
                         <div class="shop-title" >
                             {item.name}     
                         </div>
                         <div class="add-product-shop-button-block">
-                            <Link to="/addproduct" class="add-product-shop-button">
+                            <Link to={{
+                                pathname: "/addproduct",
+                                shop_id: item.shop_id
+                            }}
+                                  class="add-product-shop-button">
                                 افزودن محصول
                             </Link>
-                            <Link to="/report" class="report-page-shop-button">
+                            <Link to={{
+                                pathname: "/report",
+                                shop_id: item.shop_id
+                            }} class="report-page-shop-button">
                                 صفحه گزارش‌ها
                             </Link>
                         </div>

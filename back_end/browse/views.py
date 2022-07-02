@@ -56,10 +56,10 @@ def get_shops(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes([AllowAny, ])
-def search_product_by_name(request):
-    prods = Product.objects.filter(name__contains=request.data['part_name'])
+def search_product_by_name(request, part_name):
+    prods = Product.objects.filter(name__contains=part_name)
     serializer = ProductSerializer(prods, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 

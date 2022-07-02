@@ -30,18 +30,24 @@ class AddProduct extends Component{
         
         this.setState({
         })
-        
-        this.setState({
-            items : [{
-                name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                report1 : "sddd"
-            },
-            {
-                name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                report1 : "sddd"  
+
+        console.log("shop_id" + this.props.location.shop_id)
+        console.log("token" + this.props.token)
+        const requestOptions2 = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
             }
-        ]
-        })
+        };
+        fetch("http://localhost:8000/reports/" + this.props.location.shop_id + "/", requestOptions2
+        ).then((res) => res.json())
+            .then((json) => {
+                console.log(json.favorites)
+                this.setState({
+                        items: json
+                    }
+                );
+            })
     }
     
 
@@ -61,10 +67,15 @@ class AddProduct extends Component{
                 return(
                     <div class="report-cart">
                         <div class="prdocut-detail-block">
-                            {item.name}    
+                            {item.product.name}
                         </div>
                         <div class="report-detail-block">
-                            {item.report1}    
+                            {item.user.username}
+                            <br/>
+                            {item.description === "a"? "این کالا مربوط به این صفحه نیست":
+                                (item.description === "b")? "قیمت یا موجودی صحیح نیست":
+                                    "میخواهم سفارشم را از این فروشگاه پیگیری کنم"
+                            }
                         </div>   
                     </div>
                 )
