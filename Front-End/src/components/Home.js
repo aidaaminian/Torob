@@ -145,6 +145,7 @@ class Home extends Component{
             registerchange: 'displaynone',
             emailClass: 'login-register-input-div-home'
         })
+        this.setState({searchblock: 'displaynone'})
     }
 
     loginRegisterClick() {
@@ -282,7 +283,6 @@ class Home extends Component{
 
     changeBlurStyle(){
         document.getElementById("searchinput").style.border = "0"; 
-        this.setState({searchblock: 'displaynone'})
     }
 
     searchInput(){
@@ -299,18 +299,15 @@ class Home extends Component{
     }
 
     render(){
-        console.log("username home ", this.props.username)
         let search_items_blocks = this.state.searchItems ?
             (
                 this.state.searchItems.map((item) => {
                     return(
-                        <div class="report-cart">
-                            <div class="prdocut-detail-block">
-                                <Link to={"/products/" + item.product_id + "/"}>
-                                        {item.name}
-                                </Link>
-                            </div>
-                         </div>
+                        <div class="prdocut-detail-block">
+                            <Link class="search-item" to={"/products/" + item.product_id + "/"}>
+                                    {item.name}
+                            </Link>
+                        </div>
                     )
                 })
             ):
@@ -383,7 +380,7 @@ class Home extends Component{
                             آدرس ایمیل وارد شده معتبر نیست.
                         </div>
                     </div>
-                    <button id="usernamebutton" onClick={this.loginRegisterClick.bind(this)} class="login-register-button">ثبت نام</button>
+                    <button id="usernamebutton" onClick={this.loginRegisterClick.bind(this)} class="login-register-button">{this.state.loginchange === 'displaynone' ? "ورود" : "ثبت نام"} </button>
                     <a onClick={this.changeloginRegisterMode.bind(this)} class={this.state.loginchange}>
                         .قبلاً در ترب حساب کاربری داشتم
                     </a>

@@ -42,26 +42,50 @@ class AddProduct extends Component{
     
 
     buttonClick(){
-        const requestOptions = {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': "Token " + this.props.token
-            },
-            body: JSON.stringify({
-                "shop_id": this.props.location.shop_id,
-                "product_id": this.state.selected_id,
-                "price": document.getElementById("price").value
+        if(this.state.selected_id){
+            const requestOptions = {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': "Token " + this.props.token
+                },
+                body: JSON.stringify({
+                    "shop_id": this.props.location.shop_id,
+                    "product_id": this.state.selected_id,
+                    "price": document.getElementById("price").value
+                })
+            };
+            fetch("http://127.0.0.1:8000/addshoppingdetail/", requestOptions)
+                .then((res) => res.json())
+                .then((json) => {
+                    this.setState({
+                       
+                    }
+                );
             })
-        };
-        fetch("http://127.0.0.1:8000/addshoppingdetail/", requestOptions)
-            .then((res) => res.json())
-            .then((json) => {
-                this.setState({
-                   
-                }
-            );
-        })
+        }
+        else{
+            const requestOptions = {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': "Token " + this.props.token
+                },
+                body: JSON.stringify({
+                    "shop_id": this.props.location.shop_id,
+                    "price": document.getElementById("price").value
+                })
+            };
+            fetch("http://127.0.0.1:8000/addproduct/", requestOptions)
+                .then((res) => res.json())
+                .then((json) => {
+                    this.setState({
+                       
+                    }
+                );
+            })
+        }
+  
     }
 
     showCategoryDropdown(){
@@ -185,6 +209,7 @@ class AddProduct extends Component{
             selected_id: id,
             selected_name: name
         })
+        document.getElementById("name").value = name
     }
 
     render(){
@@ -278,7 +303,7 @@ class AddProduct extends Component{
                             <div class="resgister-input-label">
                                 نام 
                             </div>
-                            <input autoComplete='off' id="name" value={this.state.selected_name ? this.state.selected_name : ""} onFocus={this.changeNameFocusStyle.bind(this)} onBlur={this.changeNameBlurStyle.bind(this)} style={inputStyle.input} /> 
+                            <input autoComplete='off' id="name" onFocus={this.changeNameFocusStyle.bind(this)} onBlur={this.changeNameBlurStyle.bind(this)} style={inputStyle.input} /> 
                             <div id='namedropdown' class={this.state.namedd === 0 ? "resgister-category-dropdown" : "displaynone"}>
                                 {name_blocks}
                             </div>

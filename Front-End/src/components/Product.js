@@ -30,6 +30,13 @@ const searchinputStyle = {
     }
 };
 
+function convertToEnglishNumber(inp){
+    return inp.replace(/[۰-۹]/g, c => String.fromCharCode(c.charCodeAt(0) - 1728))
+}
+function convertToPersianNumber(inp){
+    return inp.replace(/[0-9]/g, c => String.fromCharCode(c.charCodeAt(0) + 1728))
+}
+
 function hasLowerCase(str) {
     return (/[a-z]/.test(str));
 }
@@ -78,7 +85,8 @@ class Product extends Component{
             emailError: 'displaynone',
             report_on: false,
             shop_id: null,
-            Addeditem_img_src: null
+            Addeditem_img_src: null,
+            descp: undefined
         };
     }
 
@@ -116,8 +124,6 @@ class Product extends Component{
                     else console.log("could not add to recent")
                 }
             )
-
-        this.showReport = this.showReport.bind(this)
     }
 
     mobileDropdown(){
@@ -291,13 +297,8 @@ class Product extends Component{
         this.state.loginchange === 'login-register-change-mode' ? this.setState({emailClass: 'displaynone'}) : this.setState({emailClass: 'login-register-input-div-home'})
     }
 
-    changePasswordType(){
-        var x = document.getElementById("password");
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
-        }
+    changeDescp(descpr){
+        this.setState({descp: descpr})
     }
 
     changeUsernameFocusStyle(){
@@ -329,10 +330,56 @@ class Product extends Component{
         this.setState({searchblock: 'displaynone'})
     }
 
-    showReport(){
+    showReport(shopid){
         this.setState({
-            report_on: ~this.state.report_on
+            report_on: ~this.state.report_on,
+            shop_id: shopid
         })
+    }
+
+    reportClick(){
+        console.log(this.state.item.product_id)
+        console.log(this.state.shop_id)
+        console.log(this.state.descp)
+        const requestOptions = {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + this.props.token 
+            },
+            body: JSON.stringify({ 
+                "product_id": this.state.item.product_id,
+                "username": this.props.username,
+                "shop_id": this.state.shop_id,
+                "description": this.state.descp
+            })
+        };
+        fetch('http://localhost:8000/feedback/complaints/', requestOptions)
+            .then(response => response.json())
+            .then(json => this.setState({}));
+    }
+
+    setCommaPart = (string) => {
+        if(string){
+            let revString = [...string].reverse().join('');
+            let chunks = revString.match(/.{1,3}/g);
+            let finalString = chunks.join(',');
+            return [...finalString].reverse().join('');
+        }
+        else
+            return "";
+    }
+
+    setComma = (number) => {
+        let string = number.toString()
+        let strings = string.split(".")
+        let chunks = []
+        chunks[0] = this.setCommaPart(strings[0])
+        chunks[1] = this.setCommaPart(strings[1])
+        if(chunks[1])
+            return chunks.join(".")
+        else
+            return chunks.join("")
     }
 
     render(){
@@ -394,7 +441,7 @@ class Product extends Component{
                             <div class="prdocut-detail-block">
                                 {shop.name}
                             </div>
-                            <button class="report" onClick={this.showReport}>
+                            <button class="report" onClick={() => this.showReport(shop.shop_id)}>
                                 گزارش
                                 <img src="https://torob.com/static/images/flag_white.png" height="16" width="16" alt="price report" id="report-img" class="jsx-2827249071"></img>
                             </button>
@@ -418,7 +465,7 @@ class Product extends Component{
             )
         return(
             (
-                <body class={this.state.Addeditem ?'browse-page':'dispaynone'}>{this.state.Addeditem}
+                <body class={this.state.Addeditem ?'browse-page':'dispaynone'}>
                 <div class={this.state.loginregisterdialogue}>
                     <div class="login-register-close-flex">
                         <div onClick={this.removeClick.bind(this)} class="login-register-close">
@@ -448,10 +495,10 @@ class Product extends Component{
                             رمز عبور
                         </div>
                         <div class="input-block">
-                            <input id="password" autoComplete='off'onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" />
+                            <input id="password" autoComplete='off' style={nameinputStyle.input} type="password" />
                         </div>
                         <label>
-                            <input type="checkbox" onClick={this.changePasswordType.bind(this)}/>
+                            <input type="checkbox" />
                             <span class="checkbox-text">
                                     show password
                                 </span>
@@ -493,7 +540,7 @@ class Product extends Component{
                     <div class="report-content">
                         <div class="report-register-div">
                             <div class="report-register-name-title">
-                                {this.state.shop_id}
+                                {this.state.shop_id ? this.state.item.shops[this.state.shop_id - 1].name : ""}
                             </div>
                             <img src={this.state.item.img_src ? this.state.item.img_src: " "} width="120" height="120" class="report-product-image"></img>
                         </div>
@@ -503,7 +550,7 @@ class Product extends Component{
                                 این کالا مربوط به این صفحه نیست.
                             </div>
                             <label>
-                                <input type="checkbox" onClick={this.changePasswordType.bind(this)}/>
+                                <input type="checkbox" onClick={() => this.changeDescp("این کالا مربوط به این صفحه نیست.")}/>
                                 <span>
                                     </span>
                             </label>
@@ -513,12 +560,12 @@ class Product extends Component{
                                 قیمت یا موجودی صحیح نیست.
                             </div>
                             <label>
-                                <input type="checkbox" onClick={this.changePasswordType.bind(this)}/>
+                                <input type="checkbox" onClick={() => this.changeDescp("قیمت یا موجودی صحیح نیست.")}/>
                                 <span>
                                     </span>
                             </label>
                         </div>
-                        <button id="report-button" onClick={this.loginRegisterClick.bind(this)} class="report-register-button">ثبت گزارش</button>
+                        <button id="report-button" onClick={this.reportClick.bind(this)} class="report-register-button">ثبت گزارش</button>
                     </div>
                 </div>
                 <div onClick={this.removeClick.bind(this)} class={this.state.report_on ? 'dim' : this.state.dim }>
@@ -648,7 +695,7 @@ class Product extends Component{
                                     {this.state.item.name}
                                 </div>
                                 <div class="prdocut-price">
-                                    از {this.state.item.min_price} تومان تا {this.state.item.max_price} تومان
+                                    از {this.state.item.min_price ? this.setComma(convertToPersianNumber(this.state.item.min_price.toString())) : ""} تومان تا {this.state.item.max_price ? this.setComma(convertToPersianNumber(this.state.item.max_price.toString())) : ""} تومان
                                 </div>
                             </div>
                             <div class="product-img-block-gt">
@@ -670,7 +717,7 @@ class Product extends Component{
                                         حافظه داخلی
                                     </div>
                                     <div class="home-detail">
-                                        {this.state.item.internal_storage}
+                                        {this.state.item.internal_storage ? "گیگابایت " + convertToPersianNumber(this.state.item.internal_storage.toString()) : ""} 
                                     </div>
                                 </div>
                                 <div class="spcfc">
@@ -686,7 +733,7 @@ class Product extends Component{
                                         گارانتی
                                     </div>
                                     <div class="home-detail">
-                                        {this.state.item.warranty}
+                                        {this.state.item.warranty ? "ماه " + convertToPersianNumber(this.state.item.warranty.toString()) : ""} 
                                     </div>
                                 </div>
                                 <div class="spcfc">
@@ -694,7 +741,7 @@ class Product extends Component{
                                         وزن
                                     </div>
                                     <div class="home-detail">
-                                        {this.state.item.weight}
+                                        {this.state.item.weight ? convertToPersianNumber(this.state.item.weight.toString()) : ""} 
                                     </div>
                                 </div>
                             </div>

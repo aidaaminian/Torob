@@ -45,6 +45,13 @@ const searchInputStyle = {
     }
 };
 
+function convertToEnglishNumber(inp){
+    return inp.replace(/[۰-۹]/g, c => String.fromCharCode(c.charCodeAt(0) - 1728))
+}
+function convertToPersianNumber(inp){
+    return inp.replace(/[0-9]/g, c => String.fromCharCode(c.charCodeAt(0) + 1728))
+}
+
 function hasLowerCase(str) {
     return (/[a-z]/.test(str));
 }
@@ -89,8 +96,8 @@ class Browse extends Component{
             categoryDropdownClicked: null,
             priceDropdownClicked: null,
             showPriceButtonClicked: null,
-            minValues: null,
-            maxValues : null,
+            minValues: '۰',
+            maxValues : '۲۰۰۰۰۰۰۰',
             favoriteClickColor: "#999",
             favorites: [],
             userdropdownClick: 1,
@@ -204,14 +211,11 @@ class Browse extends Component{
     }
 
     priceButtonClick(){
-        const filteredItems = [].concat(this.state.items)
-        /*filteredItems.filter((a) => (a.max_price <= this.state.maxValues && a.min_price >= this.state.minValues) ? 1 : -1)
+        var filteredItems = this.state.items
+        filteredItems = filteredItems.filter((a) => (a.max_price <= Number(convertToEnglishNumber(this.state.maxValues)) && a.min_price >= Number(convertToEnglishNumber(this.state.minValues))))
         this.setState({
             showPriceButtonClicked: ~this.state.showPriceButtonClicked,
             items: filteredItems
-        })*/
-        this.setState({
-            showPriceButtonClicked: ~this.state.showPriceButtonClicked
         })
     }
 
@@ -288,6 +292,29 @@ class Browse extends Component{
 
     closeClick(){
         this.props.changeUsername(null)
+    }
+
+    setCommaPart = (string) => {
+        if(string){
+            let revString = [...string].reverse().join('');
+            let chunks = revString.match(/.{1,3}/g);
+            let finalString = chunks.join(',');
+            return [...finalString].reverse().join('');
+        }
+        else
+            return "";
+    }
+
+    setComma = (number) => {
+        let string = number.toString()
+        let strings = string.split(".")
+        let chunks = []
+        chunks[0] = this.setCommaPart(strings[0])
+        chunks[1] = this.setCommaPart(strings[1])
+        if(chunks[1])
+            return chunks.join(".")
+        else
+            return chunks.join("")
     }
 
     removeClick(){
@@ -530,23 +557,6 @@ class Browse extends Component{
         category === 'موبایل' ? title = 'گوشی ' + title : title = title
         category === 'تبلت' && subCategory !== undefined ? title = 'تبلت ' + title : title = title
         head === 'لپ‌تاپ' && subCategory !== undefined ? title = 'لپ‌تاپ ' + title : title = title
-        let maxValue, minValue
-        head === 'موبایل و تبلت' && category === undefined ? maxValue = '۱٫۷۱۵٫۹۸۵٫۰۰۰' : maxValue = maxValue
-        head === 'لپ‌تاپ' && category === undefined ? maxValue = '۱٫۹۵۳٫۰۰۰٫۰۰۰' : maxValue = maxValue
-        category === 'موبایل' && subCategory === undefined ? maxValue = '۳۵۶٫۶۷۹٫۴۰۰' : maxValue = maxValue
-        category === 'تبلت' && subCategory === undefined ? maxValue = '۱۱۰٫۶۵۳٫۷۰۰' : maxValue = maxValue
-        category === 'لپ‌تاپ' && subCategory === undefined ? maxValue = '۶۶۴٫۳۰۴٫۲۰۰' : maxValue = maxValue
-        subCategory === 'سامسونگ (Samsung)' && category === 'موبایل' ? maxValue = '۴۸٫۹۵۰٫۰۰۰' : maxValue = maxValue
-        subCategory === 'شیائومی (Xiaomi)' && category === 'موبایل' ? maxValue = '۳۳٫۹۹۹٫۰۰۰' : maxValue = maxValue
-        subCategory === 'اپل (Apple)' && category === 'موبایل' ? maxValue = '۶۶٫۰۰۰٫۰۰۰' : maxValue = maxValue
-        subCategory === 'سامسونگ (Samsung)' && category === 'تبلت' ? maxValue = '۹۶٫۵۰۰٫۰۰۰' : maxValue = maxValue
-        subCategory === 'شیائومی (Xiaomi)' && category === 'تبلت' ? maxValue = '۹۶٫۵۰۰٫۰۰۰' : maxValue = maxValue
-        subCategory === 'اپل (Apple)' && category === 'تبلت' ? maxValue = '۵۱٫۵۰۰٫۰۰۰' : maxValue = maxValue
-        subCategory === 'لنوو (Lenovo)' && category === 'لپ‌تاپ' ? maxValue = '۲۷۰٫۵۹۳٫۶۰۰' : maxValue = maxValue
-        subCategory === 'ایسوس (Asus)' && category === 'لپ‌تاپ' ? maxValue = '۲۰۳٫۸۰۰٫۰۰۰' : maxValue = maxValue
-        subCategory === 'اپل (Apple)' && category === 'لپ‌تاپ' ? maxValue = '۲۷۸٫۰۹۰٫۱۰۰' : maxValue = maxValue
-        maxValue = this.state.maxValues ?  this.state.maxValues : maxValue
-        minValue = this.state.minValues ?  this.state.minValues : '۰'
         let leftPanelTitle = category ? 'انتخاب برند' : 'دسته‌بندی دقیق‌تر'
         let showCategoryButtonClicked = subCategory ? 1 : 0
         let addedItems = this.state.items ?
@@ -565,7 +575,7 @@ class Browse extends Component{
                                     {item.name}
                                 </div>
                                 <div class="product-price">
-                                    از {item.min_price} تومان
+                                    از {this.setComma(convertToPersianNumber(item.min_price.toString()))} تومان
                                 </div>    
                             </Link>
                             <div onClick={() => {favorite ? this.removeFavorite(item.product_id) : this.setFavorite(item.product_id)}} class="favorite">
@@ -803,7 +813,7 @@ class Browse extends Component{
                                     <div onClick={this.removePriceClick.bind(this)} class="price-showed-close">
                                         ×
                                     </div>
-                                    از {minValue} تا {maxValue}
+                                    از {this.state.minValues} تا {this.state.maxValues}
                                 </button>
                                 <div  class={ showCategoryButtonClicked ? 'price-button-showed' : 'displaynone'}>
                                     <Link to={window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'))} class="price-showed-close">
@@ -936,13 +946,13 @@ class Browse extends Component{
                             <div class={ this.state.priceDropdownClicked ? 'displaynone' : 'price-block' }>
                                 <div class="price-input-block">
                                     <div class="input-block-price">
-                                        <input autocomplete="off" id="minvalue" defaultValue={minValue} value={minValue} onInput={this.minValueInput.bind(this)} style={priceInputStyle.input} /> 
+                                        <input autocomplete="off" id="minvalue" defaultValue={this.state.minValues} value={this.state.minValues} onInput={this.minValueInput.bind(this)} style={priceInputStyle.input} /> 
                                         <div class="input-block-text">
                                             از
                                         </div>
                                     </div>
                                     <div class="input-block-price">
-                                        <input autocomplete="off" id="maxvalue" defaultValue={maxValue} value={maxValue} onInput={this.maxValueInput.bind(this)} style={priceInputStyle.input}/> 
+                                        <input autocomplete="off" id="maxvalue" defaultValue={this.state.maxValues} value={this.state.maxValues} onInput={this.maxValueInput.bind(this)} style={priceInputStyle.input}/> 
                                         <div class="input-block-text">
                                             تا
                                         </div>

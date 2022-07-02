@@ -238,6 +238,7 @@
     font-family: iranyekan;
     z-index: 3;
     align-self: center;
+    margin-left: 15%;
 }
 
 .browse-page{
@@ -320,6 +321,7 @@
     align-items: flex-end;
     padding-right: 20px;
     row-gap: 12px;
+    justify-self: center;
 }
 
 .report-register-name-title{
@@ -732,12 +734,20 @@ nav{
     row-gap: 30px;
 }
 
+.search-item{
+    text-decoration: none;
+    color: #333333;
+}
+
 .prdocut-detail-block{
     font-family: iranyekan;
     font-size: 16px;
-    font-weight: bold;
     direction: rtl;
-    margin-bottom: 10px;
+    margin-bottom: 10px; 
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-top: 3%;
+    width: 100%;
 }
 
 .prdocut-price{
@@ -1345,7 +1355,6 @@ nav{
 .search-block{
     background-color: var(--white);
     width: 477px;
-    height: 320px;
     box-shadow: 0px 0px 7px 1px #ccc;
 }
 
