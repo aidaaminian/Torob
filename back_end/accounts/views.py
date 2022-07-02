@@ -96,7 +96,7 @@ def remove_product_from_favorites(request):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, ])
+@permission_classes([AllowAny, ])
 def add_product_to_recent_view(request):
     user1 = User.objects.get(username=request.data['username'])
     prod1 = Product.objects.get(product_id=request.data['product_id'])

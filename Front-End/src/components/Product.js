@@ -96,6 +96,26 @@ class Product extends Component{
                 );
             })
 
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "username": this.props.username,
+                "product_id": this.props.match.params.productid
+            })
+        };
+        console.log("username ", this.props.username)
+        console.log("product_id ", this.props.match.params.productid)
+        fetch('http://127.0.0.1:8000/addrecent/', requestOptions)
+            .then((res) => {
+                    if(res.status === 200) console.log("product " + this.props.match.params.productid + " added to recent")
+                    else console.log("could not add to recent")
+                }
+            )
+
         this.showReport = this.showReport.bind(this)
     }
 

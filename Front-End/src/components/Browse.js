@@ -409,6 +409,7 @@ class Browse extends Component{
                 "product_id": productid
             })
         };
+        console.log("favorite clicked")
         
         fetch("http://127.0.0.1:8000/addfavorite/", requestOptions)
             .then((res) => res.json())
@@ -519,7 +520,11 @@ class Browse extends Component{
                                 </div>    
                             </Link>
                             <div class="favorite">
-                            <svg OnClick={this.favorite(item.product_id)} fill={favorite? "#d73948" : "#999"} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی"><g><path d={item.favorite? fill : empty}></path></g></svg>
+                            <svg OnClick={this.favorite(item.product_id)} fill={favorite? "#d73948" : "#999"}
+                                 width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی">
+                                <g><path d={item.favorite? fill : empty}></path>
+                                </g>
+                            </svg>
                             </div> 
                         </div>
                     )
