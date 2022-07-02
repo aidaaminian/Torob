@@ -60,6 +60,7 @@ class Mobiletablet extends Component{
             userdropdownClick: 1,
             searchblock: 'displaynone',
             searchItems: [],
+            items:[],
             loginregisterdialogue: 'displaynone',
             dim: '',
             loginchange: 'login-register-change-mode',
@@ -90,14 +91,32 @@ class Mobiletablet extends Component{
             })
         };
         
-        fetch("http://localhost:3000/search/" + document.getElementById("searchinput").value
-            ).then((res) => res.json())
+        // fetch("http://localhost:3000/search/" + document.getElementById("searchinput").value
+        //     ).then((res) => res.json())
+        //     .then((json) => {
+        //         this.setState({
+        //             searchItems: json
+        //         }
+        //     );
+        // })
+
+        console.log("username" + this.props.username)
+        console.log("token" + this.props.token)
+        const requestOptions2 = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+        fetch("http://localhost:8000/profile/" + this.props.username + "/", requestOptions2
+        ).then((res) => res.json())
             .then((json) => {
+                console.log(json.favorites)
                 this.setState({
-                    searchItems: json
-                }
-            );
-        })
+                        items: json.favorites
+                    }
+                );
+            })
     }
     
     mobileDropdown(){
@@ -274,9 +293,9 @@ class Mobiletablet extends Component{
             this.state.items.map((item) => {
                 return(
                     <div class="favorite-card">
-                        <Link to="/products/0" class="favorite-link">
+                        <Link to={"/products/" + item.product_id} class="favorite-link">
                             <div class="product-img-block">
-                                <img src="https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg"></img>
+                                <img src={item.img_src}></img>
                             </div>
                             <div class="product-detail">
                                 {item.name}

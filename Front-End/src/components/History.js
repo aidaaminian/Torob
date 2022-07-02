@@ -53,13 +53,14 @@ class Mobiletablet extends Component{
 
     constructor(props) {
         super(props);
-   
+
         this.state = {
             mtdisp: 'displaynone',
             laptopdisp: 'displaynone',
             userdropdownClick: 1,
             searchblock: 'displaynone',
             searchItems: [],
+            items: [],
             loginregisterdialogue: 'displaynone',
             dim: '',
             loginchange: 'login-register-change-mode',
@@ -73,69 +74,32 @@ class Mobiletablet extends Component{
     }
 
     componentDidMount() {
-        
+
         this.setState({
             mtdisp: 'displaynone',
             laptopdisp: 'displaynone'
         })
-        
-        this.setState({
-            items: [{
-                img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                min_price: "۴۵٫۶۹۹٫۰۰۰",
-                max_price: "۵۸٫۵۰۰٫۰۰۰",
-                head: 'mobiletablet',
-                category: 'mobile',
-                sub_category: 'apple',
-                internal_storage: '256 گیگابایت',
-                weight: '240 گرم',
-                warranty: 'گارانتی 18 ماهه',
-                color: 'نقره‌ای'
-            },
-            {
-                img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                min_price: "۴۵٫۶۹۹٫۰۰۰",
-                max_price: "۵۸٫۵۰۰٫۰۰۰",
-                head: 'mobiletablet',
-                category: 'mobile',
-                sub_category: 'apple',
-                internal_storage: '256 گیگابایت',
-                weight: '240 گرم',
-                warranty: 'گارانتی 18 ماهه',
-                color: 'نقره‌ای'
-            },
-            {
-                img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                min_price: "۴۵٫۶۹۹٫۰۰۰",
-                max_price: "۵۸٫۵۰۰٫۰۰۰",
-                head: 'mobiletablet',
-                category: 'mobile',
-                sub_category: 'apple',
-                internal_storage: '256 گیگابایت',
-                weight: '240 گرم',
-                warranty: 'گارانتی 18 ماهه',
-                color: 'نقره‌ای'
-            },{
-                img_src: "https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg",
-                name: "گوشی اپل iPhone 13 Pro max (Not Active) | حافظه 256 گیگابایت ا Apple iPhone 13 Pro max (Not Active) 256 GB",
-                min_price: "۴۵٫۶۹۹٫۰۰۰",
-                max_price: "۵۸٫۵۰۰٫۰۰۰",
-                head: 'mobiletablet',
-                category: 'mobile',
-                sub_category: 'apple',
-                internal_storage: '256 گیگابایت',
-                weight: '240 گرم',
-                warranty: 'گارانتی 18 ماهه',
-                color: 'نقره‌ای'
+
+        console.log("username" + this.props.username)
+        console.log("token" + this.props.token)
+        const requestOptions2 = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
             }
-            ]
-        } )
+        };
+        fetch("http://localhost:8000/profile/" + this.props.username + "/", requestOptions2
+        ).then((res) => res.json())
+            .then((json) => {
+                console.log(json.favorites)
+                this.setState({
+                        items: json.recent_views
+                    }
+                );
+            })
 
     }
-    
+
     mobileDropdown(){
         let dispv = this.state.mtdisp === 'disp' ? 'displaynone': 'disp'
         this.setState({
@@ -160,7 +124,7 @@ class Mobiletablet extends Component{
             userdropdown: userdropdownv
         })
     }
-    
+
     mobileDropdown(){
         let dispv = this.state.mtdisp === 'disp' ? 'displaynone': 'disp-nav'
         this.setState({
@@ -176,11 +140,11 @@ class Mobiletablet extends Component{
     }
 
     changeFocusStyle(){
-        document.getElementById("searchinput").style.border = "2px solid black"; 
+        document.getElementById("searchinput").style.border = "2px solid black";
     }
 
     changeBlurStyle(){
-        document.getElementById("searchinput").style.border = "0"; 
+        document.getElementById("searchinput").style.border = "0";
         this.setState({searchblock: 'displaynone'})
     }
 
@@ -264,31 +228,31 @@ class Mobiletablet extends Component{
     }
 
     changeUsernameFocusStyle(){
-        document.getElementById("username").style.border = "2px solid black"; 
+        document.getElementById("username").style.border = "2px solid black";
     }
 
     changeUsernameBlurStyle(){
-        document.getElementById("username").style.border = "0"; 
+        document.getElementById("username").style.border = "0";
     }
 
     changePasswordFocusStyle(){
-        document.getElementById("password").style.border = "2px solid black"; 
+        document.getElementById("password").style.border = "2px solid black";
     }
 
     changePasswordBlurStyle(){
-        document.getElementById("password").style.border = "0"; 
+        document.getElementById("password").style.border = "0";
     }
 
     changeEmailFocusStyle(){
-        document.getElementById("email").style.border = "2px solid black"; 
+        document.getElementById("email").style.border = "2px solid black";
     }
 
     changeEmailBlurStyle(){
-        document.getElementById("email").style.border = "0"; 
+        document.getElementById("email").style.border = "0";
     }
 
     changeBlurStyle(){
-        document.getElementById("searchinput").style.border = "0"; 
+        document.getElementById("searchinput").style.border = "0";
         this.setState({searchblock: 'displaynone'})
     }
 
@@ -303,27 +267,27 @@ class Mobiletablet extends Component{
             );
         })
     }
-    
+
     render(){
         let userbuttonname = this.props.username ? this.props.username : "ورود / ثبت نام"
         let history_blocks = this.state.items ? (
             this.state.items.map((item) => {
                 return(
                     <div class="favorite-card">
-                        <Link to="/products/0" class="favorite-link">
+                        <Link to={"/products/" + item.product_id} class="favorite-link">
                             <div class="product-img-block">
-                                <img src="https://storage.torob.com/backend-api/base/images/Np/T-/NpT-mU7_pyaDS9BX.jpg_/0x145.jpg"></img>
+                                <img src={item.img_src}></img>
                             </div>
                             <div class="product-detail">
                                 {item.name}
                             </div>
                             <div class="product-price">
-                                از {item.min_price} تومان   
+                                از {item.min_price} تومان
                             </div>
-                        </Link> 
+                        </Link>
                         <div class="favorite">
                             <svg fill={item.favorite? "#d73948" : "#999"} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی"><g><path d={item.favorite? fill : empty}></path></g></svg>
-                        </div> 
+                        </div>
                     </div>
                 )
             })
@@ -352,7 +316,7 @@ class Mobiletablet extends Component{
                             نام کاربری
                         </div>
                         <div class="input-block">
-                            <input autocomplete="off" id="username" onFocus={this.changeUsernameFocusStyle.bind(this)} onBlur={this.changeUsernameBlurStyle.bind(this)} style={nameinputStyle.input} type="text" /> 
+                            <input autocomplete="off" id="username" onFocus={this.changeUsernameFocusStyle.bind(this)} onBlur={this.changeUsernameBlurStyle.bind(this)} style={nameinputStyle.input} type="text" />
                         </div>
                         <div class={this.state.usernameError}>
                             نام کاربری قبلا استفاده شده است.
@@ -363,7 +327,7 @@ class Mobiletablet extends Component{
                             رمز عبور
                         </div>
                         <div class="input-block">
-                            <input id="password" autoComplete='off'onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" /> 
+                            <input id="password" autoComplete='off'onFocus={this.changePasswordFocusStyle.bind(this)} onBlur={this.changePasswordBlurStyle.bind(this)} style={nameinputStyle.input} type="password" />
                         </div>
                         <label>
                             <input type="checkbox" onClick={this.changePasswordType.bind(this)}/>
@@ -380,7 +344,7 @@ class Mobiletablet extends Component{
                             آدرس ایمیل
                         </div>
                         <div class="input-block">
-                            <input autoComplete='off' id="email" style={nameinputStyle.input} onFocus={this.changeEmailFocusStyle.bind(this)} onBlur={this.changeEmailBlurStyle.bind(this)} type="text" /> 
+                            <input autoComplete='off' id="email" style={nameinputStyle.input} onFocus={this.changeEmailFocusStyle.bind(this)} onBlur={this.changeEmailBlurStyle.bind(this)} type="text" />
                         </div>
                         <div class={this.state.emailError}>
                             آدرس ایمیل وارد شده معتبر نیست.
@@ -392,10 +356,10 @@ class Mobiletablet extends Component{
                     </a>
                     <a onClick={this.changeloginRegisterMode.bind(this)} class={this.state.registerchange}>
                         .حساب کاربری جدید می‌سازم
-                    </a>   
+                    </a>
                 </div>
                 <div onClick={this.removeClick.bind(this)} class={this.state.dim}>
-                    <nav>  
+                    <nav>
                         <div class="navtop">
                             <div class="nav-dropdown">
                                 <button id="user-button" onClick={this.userButtonClick.bind(this)} class="nav-userbutton">
@@ -415,7 +379,7 @@ class Mobiletablet extends Component{
                             </div>
                             <div class="nav-search-icon">
                                 <div class="nav-search">
-                                    <div class="nav-serachicon">     
+                                    <div class="nav-serachicon">
                                         <svg fill="white" height="33" viewBox="0 0 24 24" width="33" xmlns="http://www.w3.org/2000/svg" title="search"> <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path> <path d="M0 0h24v24H0z" fill="none"></path> </svg>
                                     </div>
                                     <input id="searchinput" onInput={this.searchInput.bind(this)} onFocus={this.changeFocusStyle.bind(this)} onBlur={this.changeBlurStyle.bind(this)} style={searchinputStyle.input} type="text" placeholder="نام کالا را وارد کنید" />
@@ -428,7 +392,7 @@ class Mobiletablet extends Component{
                                             ترب
                                         </p>
                                         <img src="https://torob.com/static/images/torob_logo.svg" class="nav-icon"/>
-                                    </div>    
+                                    </div>
                                 </Link>
                             </div>
                         </div>
@@ -444,7 +408,7 @@ class Mobiletablet extends Component{
                                 <div class="dropdown-categories">
                                     <div class="category">
                                         <Link to="/browse/mobiletablet/mobile" class="category-title">
-                                            گوشی موبایل 
+                                            گوشی موبایل
                                         </Link>
                                         <Link to="/browse/mobiletablet/mobile/samsung" class="category-item">
                                             گوشی سامسونگ
@@ -458,7 +422,7 @@ class Mobiletablet extends Component{
                                     </div>
                                     <div class="category">
                                         <Link to="/browse/mobiletablet/tablet" class="category-title">
-                                            تبلت 
+                                            تبلت
                                         </Link>
                                         <Link to="/browse/mobiletablet/tablet/samsung" class="category-item">
                                             تبلت سامسونگ
@@ -470,7 +434,7 @@ class Mobiletablet extends Component{
                                             تبلت اپل
                                         </Link>
                                     </div>
-                                </div>  
+                                </div>
                             </div>
                         </div>
                         <div class={this.state.laptopdisp}>
@@ -481,7 +445,7 @@ class Mobiletablet extends Component{
                                 <div class="dropdown-categories">
                                     <div class="category">
                                         <Link to="/browse/laptop/laptop" class="category-title">
-                                            لپتاپ 
+                                            لپتاپ
                                         </Link>
                                         <Link to="/browse/laptop/laptop/lenovo" class="category-item">
                                             لپتاپ لنوو
@@ -493,14 +457,14 @@ class Mobiletablet extends Component{
                                             لپتاپ اپل
                                         </Link>
                                     </div>
-                                </div>  
+                                </div>
                             </div>
                         </div>
                     </nav>
                     <div>
                         <div class="favorite-panel">
-                            <div class="category-list-title"> 
-                                مشاهدات اخیر   
+                            <div class="category-list-title">
+                                مشاهدات اخیر
                             </div>
                             <div class="favorites">
                                 {history_blocks}
@@ -518,7 +482,7 @@ const mapStateToProps = (state)=>{
     }
   }
 const mapDispatchToProps= (dispatch)=>{
-    
+
     return{
     }
 }

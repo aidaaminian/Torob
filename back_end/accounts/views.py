@@ -68,7 +68,7 @@ class CreateProduct(CreateAPIView):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated, ])
+@permission_classes([AllowAny, ])
 def get_user_details(request, username):
     user1 = User.objects.get(username=username)
     serializer = UserSerializer(user1, many=False)
@@ -76,7 +76,7 @@ def get_user_details(request, username):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, ])
+@permission_classes([AllowAny, ])
 def add_product_to_favorites(request):
     user1 = User.objects.get(username=request.data['username'])
     prod1 = Product.objects.get(product_id=request.data['product_id'])
