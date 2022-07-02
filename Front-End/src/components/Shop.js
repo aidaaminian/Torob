@@ -40,7 +40,6 @@ class Shop extends Component{
     }
     
     render(){
-        console.log("username shop ", this.props.location.state.username)
         let shop_blocks = this.state ? (
             this.state.shops.map((item) => {
                 console.log("shops--shop_id " + item.shop_id)
@@ -95,12 +94,7 @@ class Shop extends Component{
 
 const mapStateToProps = (state)=>{
     return {
-<<<<<<< HEAD
         token: state.token
-=======
-      token: state.token,
-        username: state.username
->>>>>>> bff81d7af0792427ad35bc3346bcff0fd09c1d7d
     }
 }
 
