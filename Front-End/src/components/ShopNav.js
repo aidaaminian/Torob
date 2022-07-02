@@ -4,16 +4,12 @@ import {Link} from "react-router-dom";
 class ShopNav extends Component {
 
     render() {
-        console.log("username shopnav ", this.props.username)
         return (
             (
                 <div class="shop-panel">
                     <div class="shop-panel-item active-item">
                         <Link to={{
-                            pathname: "/shop",
-                            state: {
-                                username: this.props.username
-                            }
+                            pathname: "/shop"
                         }}>
                             <svg stroke="currentColor" color="white" fill="none" stroke-width="2" viewBox="0 0 24 24"
                                  stroke-linecap="round" stroke-linejoin="round" height="35px" width="35px"
@@ -29,10 +25,7 @@ class ShopNav extends Component {
                     </div>
                     <div class="shop-panel-item">
                         <Link to={{
-                            pathname: "/shopowneraccount",
-                            state: {
-                                username: this.props.username
-                            }
+                            pathname: "/shopowneraccount"
                         }}>
                             <svg stroke="currentColor" color="#333333" fill="none" stroke-width="2" viewBox="0 0 24 24"
                                  stroke-linecap="round" stroke-linejoin="round" height="35px" width="35px"

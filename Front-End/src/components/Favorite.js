@@ -80,8 +80,6 @@ class Mobiletablet extends Component{
             laptopdisp: 'displaynone'
         })        
 
-        console.log("username" + this.props.username)
-        console.log("token" + this.props.token)
         const requestOptions = {
             method: 'GET',
             headers: {
@@ -92,7 +90,6 @@ class Mobiletablet extends Component{
         fetch("http://localhost:8000/profile/" + this.props.username + "/", requestOptions
         ).then((res) => res.json())
             .then((json) => {
-                console.log(json.favorites)
                 this.setState({
                         items: json.favorites
                     }
@@ -286,7 +283,7 @@ class Mobiletablet extends Component{
                             </div>
                         </Link> 
                         <div class="favorite">
-                            <svg fill={item.favorite? "#d73948" : "#999"} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی"><g><path d={item.favorite? fill : empty}></path></g></svg>
+                            <svg fill={"#d73948"} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی"><g><path d={fill}></path></g></svg>
                         </div> 
                     </div>
                 )

@@ -16,29 +16,13 @@ const emailinputStyle = {
     }
 };
 
-const nameinputStyle = {
-    input: {
-        color: "black",
-        backgroundColor: "white",
-        border: "1px solid #ccc",
-        "border-top-left-radius": "4px",
-        "border-bottom-left-radius": "4px",
-        fontFamily: "iranyekan",
-        "padding-left": "10px",
-        "padding-bottom": "2px",
-        height: "34px",
-        width: "88%"
-    }
-};
-
 class ShopOwnerAccount extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            emailClass: 'login-register-input-div',
-            currentUsername: this.props.location.state.username
+            emailClass: 'login-register-input-div'
         };
     }
 
@@ -59,9 +43,10 @@ class ShopOwnerAccount extends Component {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Token ' + this.props.token
             },
             body: JSON.stringify({
-                "username": this.state.currentUsername,
+                "username": this.props.username,
                 "email": document.getElementById("address").value
             })
         };
@@ -84,9 +69,10 @@ class ShopOwnerAccount extends Component {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Token ' + this.props.token
             },
             body: JSON.stringify({
-                "username": this.state.currentUsername,
+                "username": this.props.username,
                 "phone_number": document.getElementById("number").value
             })
         };
@@ -129,16 +115,12 @@ class ShopOwnerAccount extends Component {
     }
 
     render() {
-        console.log("username shopowneraccount ", this.state.currentUsername)
         return (
             <body class="shop-page">
             <div class="account-panel">
                 <div class="shop-panel-item">
                     <Link to={{
-                        pathname: "/shop",
-                        state: {
-                            username: this.state.currentUsername
-                        }
+                        pathname: "/shop"
                     }}>
                         <svg stroke="currentColor" color="#333333" fill="none" stroke-width="2" viewBox="0 0 24 24"
                              stroke-linecap="round" stroke-linejoin="round" height="35px" width="35px"
@@ -154,10 +136,7 @@ class ShopOwnerAccount extends Component {
                 </div>
                 <div class="shop-panel-item  active-item">
                     <Link to={{
-                        pathname: "/shopowneraccount",
-                        state: {
-                            username: this.state.currentUsername
-                        }
+                        pathname: "/shopowneraccount"
                     }}>
                         <svg stroke="currentColor" color="white" fill="none" stroke-width="2" viewBox="0 0 24 24"
                              stroke-linecap="round" stroke-linejoin="round" height="35px" width="35px"
@@ -189,7 +168,7 @@ class ShopOwnerAccount extends Component {
                             نام کاربری
                         </div>
                         <div class="account-input-button">
-                            <div className="account-username-block">{this.state.currentUsername}</div>
+                            <div className="account-username-block">{this.props.username}</div>
                         </div>
                     </div>
                     <div class="login-register-input-div">
@@ -228,7 +207,8 @@ class ShopOwnerAccount extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        username: state.username
+        username: state.username,
+        token: state.token
     }
 }
 export default connect(mapStateToProps)(ShopOwnerAccount)

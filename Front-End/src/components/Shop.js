@@ -74,7 +74,7 @@ class Shop extends Component{
         return(
             (
                 <div class="shop-page">
-                    <ShopNav username={this.props.location.state.username}/>
+                    <ShopNav/>
                     <div class="shop-left-panel">                   
                         <div class="shop-left-panel-head">
                             <Link to="/addshop" class="add-shop-button">

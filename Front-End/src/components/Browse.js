@@ -105,19 +105,9 @@ class Browse extends Component{
             usernameError: 'displaynone',
             passwordError: 'displaynone',
             emailError: 'displaynone',
-            user_favorites: null
+            user_favorites: [],
+            items: undefined
         };
-    }
-
-    componentDidMount() {
-        
-        this.setState({
-            mtdisp: 'displaynone',
-            laptopdisp: 'displaynone',
-            head: this.props.match.params.headid,
-            category: this.props.match.params.categoryid,
-            subcategory: this.props.match.params.subcategoryid,
-        })
 
         let followPath = ""
         this.props.match.params.categoryid ? followPath += '/' + this.props.match.params.categoryid : followPath = followPath
@@ -133,28 +123,39 @@ class Browse extends Component{
                 }
             );
         })
-        
-        const requestOptions = {
-            method: 'GET',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': "Token " + this.props.token
-            },
-            body: JSON.stringify({
-            })
-        };
 
-        fetch("http://127.0.0.1:8000/profile/" + this.props.username + "/", requestOptions
-            ).then((res) => res.json())
-            .then((json) => {
-                this.setState({
-                    user_favorites: json.favorites
+        if(this.props.token){
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Token " + this.props.token
                 }
-            );
+            };
+            fetch("http://localhost:8000/profile/" + this.props.username + "/", requestOptions
+            ).then((res) => res.json())
+                .then((json) => {
+                    this.setState({
+                            user_favorites: json.favorites
+                        }
+                    );
+                })
+        }
+    }
+
+    componentDidMount() {
+        
+        this.setState({
+            mtdisp: 'displaynone',
+            laptopdisp: 'displaynone',
+            head: this.props.match.params.headid,
+            category: this.props.match.params.categoryid,
+            subcategory: this.props.match.params.subcategoryid,
         })
+        
     }
     
-    componentDidUpdate(){
+    updateProducts = () => {
         let followPath = ""
         this.props.match.params.categoryid ? followPath += '/' + this.props.match.params.categoryid : followPath = followPath
         this.props.match.params.subcategoryid ? followPath += '/' + this.props.match.params.subcategoryid : followPath = followPath
@@ -226,19 +227,6 @@ class Browse extends Component{
         this.setState({maxValues: document.getElementById("maxvalue").value})
     }
 
-    setFavoriteClick(id){
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                userid: this.props.username,
-                productid: id
-            })
-        };
-        fetch('"http://localhost:3000/api/favorites/:userid', requestOptions)
-        .then(response => response.json())
-        .then(json => this.setState({ favorites: json }));
-    }
 
     removePriceClick(){
         this.setState({showPriceButtonClicked: ~this.state.showPriceButtonClicked})
@@ -408,8 +396,8 @@ class Browse extends Component{
         })
     }
 
-    favorite = (productid) => {
-        const requestOptions = {
+    setFavorite(productid) {
+        const requestOptionsforfavorite = {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
@@ -420,12 +408,62 @@ class Browse extends Component{
                 "product_id": productid
             })
         };
-        console.log("favorite clicked")
+       
         
-        fetch("http://127.0.0.1:8000/addfavorite/", requestOptions)
+        fetch("http://127.0.0.1:8000/addfavorite/", requestOptionsforfavorite)
             .then((res) => res.json())
             .then((json) => {
             })
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Token " + this.props.token
+                }
+            };
+            fetch("http://localhost:8000/profile/" + this.props.username + "/", requestOptions
+            ).then((res) => res.json())
+                .then((json) => {
+                    this.setState({
+                            user_favorites: json.favorites
+                        }
+                    );
+                })
+    }
+
+    removeFavorite(productid) {
+        const requestOptionsforfavorite = {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': "Token " + this.props.token
+            },
+            body: JSON.stringify({
+                "username": this.props.username,
+                "product_id": productid
+            })
+        };
+       
+        
+        fetch("http://127.0.0.1:8000/removefavorite/", requestOptionsforfavorite)
+            .then((res) => res.json())
+            .then((json) => {
+            })
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Token " + this.props.token
+                }
+            };
+            fetch("http://localhost:8000/profile/" + this.props.username + "/", requestOptions
+            ).then((res) => res.json())
+                .then((json) => {
+                    this.setState({
+                            user_favorites: json.favorites
+                        }
+                    );
+                })
     }
 
     render(){
@@ -516,7 +554,7 @@ class Browse extends Component{
                 this.state.items.map((item) => {
                     let favorite
                     if(this.state.user_favorites)
-                        favorite = this.state.user_favorites.find((fav) => fav === item.product_id)
+                        favorite = this.state.user_favorites.find((fav) => fav.product_id === item.product_id)
                     return(
                         <div key = {item.id} class="product-card">
                             <Link to={"/products/" + item.product_id + "/"} class="favorite-link">
@@ -530,12 +568,12 @@ class Browse extends Component{
                                     از {item.min_price} تومان
                                 </div>    
                             </Link>
-                            <div class="favorite">
-                            <svg OnClick={this.favorite(item.product_id)} fill={favorite? "#d73948" : "#999"}
-                                 width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی">
-                                <g><path d={item.favorite? fill : empty}></path>
-                                </g>
-                            </svg>
+                            <div onClick={() => {favorite ? this.removeFavorite(item.product_id) : this.setFavorite(item.product_id)}} class="favorite">
+                                <svg fill={favorite? "#d73948" : "#999"}
+                                     width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی">
+                                    <g><path d={favorite? fill : empty}></path>
+                                    </g>
+                                </svg>
                             </div> 
                         </div>
                     )
@@ -650,35 +688,35 @@ class Browse extends Component{
                         </div>
                         <div class={this.state.mtdisp}>
                             <div class="dropdown-items">
-                                <Link to="/browse/mobiletablet" class="dropdown-title">
+                                <Link to="/browse/mobiletablet" onClick={() => this.updateProducts()} class="dropdown-title">
                                     موبایل و تبلت
                                 </Link>
                                 <div class="dropdown-categories">
                                     <div class="category">
-                                        <Link to="/browse/mobiletablet/mobile" class="category-title">
+                                        <Link to="/browse/mobiletablet/mobile" onClick={() => this.updateProducts()} class="category-title">
                                             گوشی موبایل 
                                         </Link>
-                                        <Link to="/browse/mobiletablet/mobile/samsung" class="category-item">
+                                        <Link to="/browse/mobiletablet/mobile/samsung" onClick={() => this.updateProducts()} class="category-item">
                                             گوشی سامسونگ
                                         </Link>
-                                        <Link to="/browse/mobiletablet/mobile/xiaomi" class="category-item">
+                                        <Link to="/browse/mobiletablet/mobile/xiaomi" onClick={() => this.updateProducts()} class="category-item">
                                             گوشی شیائومی
                                         </Link>
-                                        <Link to="/browse/mobiletablet/mobile/apple" class="category-item">
+                                        <Link to="/browse/mobiletablet/mobile/apple" onClick={() => this.updateProducts()} class="category-item">
                                             گوشی اپل
                                         </Link>
                                     </div>
                                     <div class="category">
-                                        <Link to="/browse/mobiletablet/tablet" class="category-title">
+                                        <Link to="/browse/mobiletablet/tablet" onClick={() => this.updateProducts()} class="category-title">
                                             تبلت 
                                         </Link>
-                                        <Link to="/browse/mobiletablet/tablet/samsung" class="category-item">
+                                        <Link to="/browse/mobiletablet/tablet/samsung" onClick={() => this.updateProducts()} class="category-item">
                                             تبلت سامسونگ
                                         </Link>
-                                        <Link to="/browse/mobiletablet/tablet/xiaomi" class="category-item">
+                                        <Link to="/browse/mobiletablet/tablet/xiaomi" onClick={() => this.updateProducts()} class="category-item">
                                             تبلت  شیائومی
                                         </Link>
-                                        <Link to="/browse/mobiletablet/tablet/apple" class="category-item">
+                                        <Link to="/browse/mobiletablet/tablet/apple" onClick={() => this.updateProducts()} class="category-item">
                                             تبلت اپل
                                         </Link>
                                     </div>
@@ -687,21 +725,21 @@ class Browse extends Component{
                         </div>
                         <div class={this.state.laptopdisp}>
                             <div class="dropdown-items">
-                                <Link to="/browse/laptop" class="dropdown-title">
+                                <Link to="/browse/laptop" onClick={() => this.updateProducts()} class="dropdown-title">
                                     لپتاپ
                                 </Link>
                                 <div class="dropdown-categories">
                                     <div class="category">
-                                        <Link to="/browse/laptop/laptop" class="category-title">
+                                        <Link to="/browse/laptop/laptop" onClick={() => this.updateProducts()} class="category-title">
                                             لپتاپ 
                                         </Link>
-                                        <Link to="/browse/laptop/laptop/lenovo" class="category-item">
+                                        <Link to="/browse/laptop/laptop/lenovo" onClick={() => this.updateProducts()} class="category-item">
                                             لپتاپ لنوو
                                         </Link>
-                                        <Link to="/browse/laptop/laptop/asus" class="category-item">
+                                        <Link to="/browse/laptop/laptop/asus" onClick={() => this.updateProducts()} class="category-item">
                                             لپتاپ  ایسوس
                                         </Link>
-                                        <Link to="/browse/laptop/laptop/apple" class="category-item">
+                                        <Link to="/browse/laptop/laptop/apple" onClick={() => this.updateProducts()} class="category-item">
                                             لپتاپ اپل
                                         </Link>
                                     </div>
@@ -786,18 +824,18 @@ class Browse extends Component{
                                     </div>
                                     <svg class="svg-arrow"  fill="#333333" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="chevron-up" ><g><path d="M18.7 9.7l-6 6c-.2.2-.4.3-.7.3-.3 0-.5-.1-.7-.3l-6-6c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0l5.3 5.3 5.3-5.3c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4z"></path></g></svg>  
                                 </button>
-                                <Link to="/browse/mobiletablet" class={ ~this.state.categoryDropdownClicked && category === undefined ? 'subcategory-detail-block' : 'displaynone'} >
+                                <Link to="/browse/mobiletablet" onClick={() => this.updateProducts()} class={ ~this.state.categoryDropdownClicked && category === undefined ? 'subcategory-detail-block' : 'displaynone'} >
                                     <div class="subcategory-detail">
                                         موبایل و تبلت 
                                     </div>
                                     <svg class="svg-arrow-left"  fill="#333333" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="chevron-up" ><g><path d="M18.7 9.7l-6 6c-.2.2-.4.3-.7.3-.3 0-.5-.1-.7-.3l-6-6c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0l5.3 5.3 5.3-5.3c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4z"></path></g></svg>  
                                 </Link>
-                                <Link to="/browse/mobiletablet/mobile" class={ ~this.state.categoryDropdownClicked && category === undefined ? 'subcategory-detail-block' : 'displaynone'} >
+                                <Link to="/browse/mobiletablet/mobile" onClick={() => this.updateProducts()} class={ ~this.state.categoryDropdownClicked && category === undefined ? 'subcategory-detail-block' : 'displaynone'} >
                                     <div class="subsubcategory-detail">
                                         گوشی موبایل 
                                     </div>
                                 </Link>
-                                <Link to="/browse/mobiletablet/tablet" class={ ~this.state.categoryDropdownClicked && category === undefined ? 'subcategory-detail-block' : 'displaynone'} >
+                                <Link to="/browse/mobiletablet/tablet" onClick={() => this.updateProducts()} class={ ~this.state.categoryDropdownClicked && category === undefined ? 'subcategory-detail-block' : 'displaynone'} >
                                     <div class="subsubcategory-detail">
                                         تبلت 
                                     </div>
@@ -808,7 +846,7 @@ class Browse extends Component{
                                 </div>
                                 <div class = {~this.state.categoryDropdownClicked ? "brands" : "displaynone"}>
                                     <div class = {category === 'موبایل' ? "" : "displaynone"}>
-                                        <Link to="/browse/mobiletablet/mobile/samsung" class = {subCategory === 'سامسونگ (Samsung)' ? "block-brand-active" : "block-brand"}>
+                                        <Link to="/browse/mobiletablet/mobile/samsung" onClick={() => this.updateProducts()} class = {subCategory === 'سامسونگ (Samsung)' ? "block-brand-active" : "block-brand"}>
                                             <div >
                                                 سامسونگ
                                             </div>
@@ -816,7 +854,7 @@ class Browse extends Component{
                                                 Samsung
                                             </div>  
                                         </Link>
-                                        <Link to="/browse/mobiletablet/mobile/xiaomi" class = {subCategory === 'شیائومی (Xiaomi)' ? "block-brand-active" : "block-brand"}>
+                                        <Link to="/browse/mobiletablet/mobile/xiaomi" onClick={() => this.updateProducts()} class = {subCategory === 'شیائومی (Xiaomi)' ? "block-brand-active" : "block-brand"}>
                                             <div>
                                                 شیائومی
                                             </div>
@@ -824,7 +862,7 @@ class Browse extends Component{
                                                 Xiaomi
                                             </div>
                                         </Link>
-                                        <Link to="/browse/mobiletablet/mobile/apple" class = {subCategory === 'اپل (Apple)' ? "block-brand-active" : "block-brand"}>
+                                        <Link to="/browse/mobiletablet/mobile/apple" onClick={() => this.updateProducts()} class = {subCategory === 'اپل (Apple)' ? "block-brand-active" : "block-brand"}>
                                             <div>
                                                 اپل
                                             </div>
@@ -834,7 +872,7 @@ class Browse extends Component{
                                         </Link>  
                                     </div>
                                     <div class = {category === 'تبلت' ? "" : "displaynone"}>
-                                        <Link to="/browse/mobiletablet/tablet/samsung" class = {subCategory === 'سامسونگ (Samsung)' ? "block-brand-active" : "block-brand"}>
+                                        <Link to="/browse/mobiletablet/tablet/samsung" onClick={() => this.updateProducts()} class = {subCategory === 'سامسونگ (Samsung)' ? "block-brand-active" : "block-brand"}>
                                             <div >
                                                 سامسونگ
                                             </div>
@@ -842,7 +880,7 @@ class Browse extends Component{
                                                 Samsung
                                             </div>  
                                         </Link>
-                                        <Link to="/browse/mobiletablet/tablet/xiaomi" class = {subCategory === 'شیائومی (Xiaomi)' ? "block-brand-active" : "block-brand"}>
+                                        <Link to="/browse/mobiletablet/tablet/xiaomi" onClick={() => this.updateProducts()} class = {subCategory === 'شیائومی (Xiaomi)' ? "block-brand-active" : "block-brand"}>
                                             <div>
                                                 شیائومی
                                             </div>
@@ -850,7 +888,7 @@ class Browse extends Component{
                                                 Xiaomi
                                             </div>
                                         </Link>
-                                        <Link to="/browse/mobiletablet/tablet/apple" class = {subCategory === 'اپل (Apple)' ? "block-brand-active" : "block-brand"}>
+                                        <Link to="/browse/mobiletablet/tablet/apple" onClick={() => this.updateProducts()} class = {subCategory === 'اپل (Apple)' ? "block-brand-active" : "block-brand"}>
                                             <div>
                                                 اپل
                                             </div>
@@ -860,7 +898,7 @@ class Browse extends Component{
                                         </Link>  
                                     </div>
                                     <div class = {category === 'لپ‌تاپ' ? "" : "displaynone"}>
-                                        <Link to="/browse/laptop/laptop/lenovo" class = {subCategory === 'لنوو (Lenovo)' ? "block-brand-active" : "block-brand"}>
+                                        <Link to="/browse/laptop/laptop/lenovo" onClick={() => this.updateProducts()} class = {subCategory === 'لنوو (Lenovo)' ? "block-brand-active" : "block-brand"}>
                                             <div >
                                                 لنوو
                                             </div>
@@ -868,7 +906,7 @@ class Browse extends Component{
                                                 Lenovo
                                             </div>  
                                         </Link>
-                                        <Link to="/browse/laptop/laptop/asus" class = {subCategory === 'ایسوس (Asus)' ? "block-brand-active" : "block-brand"}>
+                                        <Link to="/browse/laptop/laptop/asus" onClick={() => this.updateProducts()} class = {subCategory === 'ایسوس (Asus)' ? "block-brand-active" : "block-brand"}>
                                             <div>
                                                 ایسوس
                                             </div>
@@ -876,7 +914,7 @@ class Browse extends Component{
                                                 Asus
                                             </div>
                                         </Link>
-                                        <Link to="/browse/laptop/laptop/apple" class = {subCategory === 'اپل (Apple)' ? "block-brand-active" : "block-brand"}>
+                                        <Link to="/browse/laptop/laptop/apple" onClick={() => this.updateProducts()} class = {subCategory === 'اپل (Apple)' ? "block-brand-active" : "block-brand"}>
                                             <div>
                                                 اپل
                                             </div>

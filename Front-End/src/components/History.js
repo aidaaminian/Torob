@@ -70,6 +70,7 @@ class Mobiletablet extends Component{
             usernameError: 'displaynone',
             passwordError: 'displaynone',
             emailError: 'displaynone',
+            user_favorites: []
         };
     }
 
@@ -94,7 +95,8 @@ class Mobiletablet extends Component{
             .then((json) => {
                 console.log(json.favorites)
                 this.setState({
-                        items: json.recent_views
+                        items: json.recent_views,
+                        user_favorites: json.favorites
                     }
                 );
             })
@@ -273,6 +275,9 @@ class Mobiletablet extends Component{
         let userbuttonname = this.props.username ? this.props.username : "ورود / ثبت نام"
         let history_blocks = this.state.items ? (
             this.state.items.map((item) => {
+                let favorite
+                if(this.state.user_favorites)
+                    favorite = this.state.user_favorites.find((fav) => fav.product_id === item.product_id)
                 return(
                     <div class="favorite-card">
                         <Link to={"/products/" + item.product_id} class="favorite-link">
@@ -287,7 +292,7 @@ class Mobiletablet extends Component{
                             </div>
                         </Link>
                         <div class="favorite">
-                            <svg fill={item.favorite? "#d73948" : "#999"} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی"><g><path d={item.favorite? fill : empty}></path></g></svg>
+                            <svg fill={favorite? "#d73948" : "#999"} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" title="علاقه‌مندی"><g><path d={favorite? fill : empty}></path></g></svg>
                         </div>
                     </div>
                 )
