@@ -78,37 +78,18 @@ class Mobiletablet extends Component{
         this.setState({
             mtdisp: 'displaynone',
             laptopdisp: 'displaynone'
-        })
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "username": this.props.username,
-                "product_id": this.props.username
-            })
-        };
-        
-        // fetch("http://localhost:3000/search/" + document.getElementById("searchinput").value
-        //     ).then((res) => res.json())
-        //     .then((json) => {
-        //         this.setState({
-        //             searchItems: json
-        //         }
-        //     );
-        // })
+        })        
 
         console.log("username" + this.props.username)
         console.log("token" + this.props.token)
-        const requestOptions2 = {
+        const requestOptions = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': "Token " + this.props.token
             }
         };
-        fetch("http://localhost:8000/profile/" + this.props.username + "/", requestOptions2
+        fetch("http://localhost:8000/profile/" + this.props.username + "/", requestOptions
         ).then((res) => res.json())
             .then((json) => {
                 console.log(json.favorites)
@@ -498,14 +479,9 @@ class Mobiletablet extends Component{
 }
 const mapStateToProps = (state)=>{
     return {
-        username: state.username
+        username: state.username,
+        token: state.token
     }
   }
-const mapDispatchToProps= (dispatch)=>{
-    
-    return{
-        
-    }
-}
 
-export default connect(mapStateToProps,mapDispatchToProps)(Mobiletablet)
+export default connect(mapStateToProps)(Mobiletablet)

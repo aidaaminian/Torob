@@ -134,7 +134,17 @@ class Browse extends Component{
             );
         })
         
-        fetch("http://127.0.0.1:8000/profile/" + this.props.username + "/"
+        const requestOptions = {
+            method: 'GET',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': "Token " + this.props.token
+            },
+            body: JSON.stringify({
+            })
+        };
+
+        fetch("http://127.0.0.1:8000/profile/" + this.props.username + "/", requestOptions
             ).then((res) => res.json())
             .then((json) => {
                 this.setState({
@@ -402,7 +412,8 @@ class Browse extends Component{
         const requestOptions = {
             method: 'POST',
             headers: { 
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': "Token " + this.props.token
             },
             body: JSON.stringify({
                 "username": this.props.username,
@@ -910,7 +921,8 @@ class Browse extends Component{
 }
 const mapStateToProps = (state)=> {
     return {
-        username: state.username
+        username: state.username,
+        token: state.token
     }
 }
 

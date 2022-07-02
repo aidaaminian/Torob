@@ -82,13 +82,14 @@ class Mobiletablet extends Component{
 
         console.log("username" + this.props.username)
         console.log("token" + this.props.token)
-        const requestOptions2 = {
+        const requestOptions = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': "Token " + this.props.token
             }
         };
-        fetch("http://localhost:8000/profile/" + this.props.username + "/", requestOptions2
+        fetch("http://localhost:8000/profile/" + this.props.username + "/", requestOptions
         ).then((res) => res.json())
             .then((json) => {
                 console.log(json.favorites)
@@ -478,7 +479,8 @@ class Mobiletablet extends Component{
 }
 const mapStateToProps = (state)=>{
     return {
-        username: state.username
+        username: state.username,
+        token: state.token
     }
   }
 const mapDispatchToProps= (dispatch)=>{

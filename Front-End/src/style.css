@@ -507,6 +507,11 @@ nav{
     font-size: 14px;
 }
 
+.name-choice{
+    cursor: pointer;
+    direction: rtl;
+}
+
 .category-left-panel-head{
     display: flex;
     justify-content: space-between;

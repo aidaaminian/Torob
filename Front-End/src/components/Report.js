@@ -2,20 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-const inputStyle = {
-    input: {
-        color: "black",
-        backgroundColor: "white",
-        border:"1px solid #ccc",
-        "border-radius": "4px",
-        fontFamily: "iranyekan",
-        "padding-right": "10px",
-        height: "32px",
-        width:"310px",
-        direction:"rtl"
-    }
-};
-
 class AddProduct extends Component{
 
     constructor(props) {
@@ -37,6 +23,7 @@ class AddProduct extends Component{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Token ' + this.props.token
             }
         };
         fetch("http://localhost:8000/reports/" + this.props.location.shop_id + "/", requestOptions2
@@ -107,6 +94,7 @@ class AddProduct extends Component{
 }
 const mapStateToProps = (state) => {
     return {
+        token: state.token
     }
 }
 export default connect(mapStateToProps)(AddProduct)

@@ -101,6 +101,7 @@ class Product extends Component{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Token ' + this.props.token 
             },
             body: JSON.stringify({
                 "username": this.props.username,
@@ -715,7 +716,8 @@ class Product extends Component{
 }
 const mapStateToProps = (state)=>{
     return {
-        username: state.username
+        username: state.username,
+        token: state.token
     }
 }
 export default connect(mapStateToProps)(Product)

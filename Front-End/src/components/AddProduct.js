@@ -26,7 +26,10 @@ class AddProduct extends Component{
             subCategory: 'سامسونگ',
             categorydd: -1,
             subcategorydd: -1,
-            namedd: -1
+            namedd: -1,
+            items : [],
+            selected_id : undefined,
+            selected_name : undefined
         };
     }
 
@@ -34,12 +37,30 @@ class AddProduct extends Component{
         
         this.setState({
         })
-            
+        
     }
     
 
     buttonClick(){
-        this.setState({
+        const requestOptions = {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': "Token " + this.props.token
+            },
+            body: JSON.stringify({
+                "shop_id": this.props.location.shop_id,
+                "product_id": this.state.selected_id,
+                "price": document.getElementById("price").value
+            })
+        };
+        fetch("http://127.0.0.1:8000/addshoppingdetail/", requestOptions)
+            .then((res) => res.json())
+            .then((json) => {
+                this.setState({
+                   
+                }
+            );
         })
     }
 
@@ -54,11 +75,54 @@ class AddProduct extends Component{
     changeNameFocusStyle(){
         document.getElementById("name").style.boxShadow = "0px 0px 0px 3px #e8f1ff";
         this.setState({namedd: ~this.state.namedd})
+
+        let head, category, subCategory
+
+        switch(this.state.category){
+            case('لپ‌تاپ'):
+                category = 'laptop'
+                head = 'laptop'
+                break;
+            case('موبایل'):
+                category = 'mobile'
+                head = 'mobiletablet'
+                break;
+            case('تبلت'):
+                category = 'tablet'
+                head = 'mobiletablet'
+                break;              
+        }
+        switch(this.state.subCategory){
+            case('اپل'):
+                subCategory = 'apple'
+                break;
+            case('سامسونگ'):
+                subCategory = 'samsung'
+                break;
+            case('شیائومی'):
+                subCategory = 'xiaomi'
+                break;
+            case('لنوو'):
+                subCategory = 'lenovo'
+                break;
+            case('ایسوس'):
+                subCategory = 'asus'
+                break; 
+        }
+
+        fetch("http://127.0.0.1:8000/browse/" + head + "/" + category + "/" + subCategory + "/"
+            ).then((res) => res.json())
+            .then((json) => {
+                this.setState({
+                    items: json
+                }
+            );
+        })
     }
 
     changeNameBlurStyle(){
         document.getElementById("name").style.boxShadow = "unset";
-        this.setState({namedd: ~this.state.namedd}) 
+        //this.setState({namedd: ~this.state.namedd}) 
     }
 
     changePriceFocusStyle(){
@@ -116,8 +180,28 @@ class AddProduct extends Component{
     removeClick(){
     }
 
+    setSelectedId(id, name) {     
+        this.setState({
+            selected_id: id,
+            selected_name: name
+        })
+    }
+
     render(){
-        let names
+        let name_blocks = this.state.items ? 
+        (
+            this.state.items.map((item) => {
+                return(
+                    <div class="name-choice" key={item.id} onClick={ () => this.setSelectedId(item.product_id, item.name)}>
+                        {item.name}
+                    </div>
+                )
+            })
+            
+        ): (
+            <div>
+            </div> 
+        )
         let subCategories
         switch(this.state.category){
             case 'موبایل' || 'تبلت':
@@ -162,7 +246,7 @@ class AddProduct extends Component{
                     </Link>
                     <div class="resgister-container">
                         <div class="resgister-title" >
-                            اطلاعات محصول      
+                            اطلاعات محصول  
                         </div>
                         <div class="login-register-input-div">
                             <div class="resgister-input-label">
@@ -194,9 +278,9 @@ class AddProduct extends Component{
                             <div class="resgister-input-label">
                                 نام 
                             </div>
-                            <input autoComplete='off' id="name" onFocus={this.changeNameFocusStyle.bind(this)} onBlur={this.changeNameBlurStyle.bind(this)} style={inputStyle.input} /> 
+                            <input autoComplete='off' id="name" value={this.state.selected_name ? this.state.selected_name : ""} onFocus={this.changeNameFocusStyle.bind(this)} onBlur={this.changeNameBlurStyle.bind(this)} style={inputStyle.input} /> 
                             <div id='namedropdown' class={this.state.namedd === 0 ? "resgister-category-dropdown" : "displaynone"}>
-                                {names}
+                                {name_blocks}
                             </div>
                         </div>
                         <div class="login-register-input-div">
@@ -214,6 +298,7 @@ class AddProduct extends Component{
 }
 const mapStateToProps = (state) => {
     return {
+        token: state.token
     }
 }
 export default connect(mapStateToProps)(AddProduct)
