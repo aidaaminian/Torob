@@ -36,9 +36,7 @@ def get_products(request, head, category, sub_category):
 @permission_classes([AllowAny, ])
 def get_single_product(request, product_id):
     prod1 = Product.objects.get(product_id=product_id)
-    print("prod1.shops ", prod1.shops.all())
     serializer = ProductSerializer(prod1, many=False)
-    print(serializer.data['shops'])
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -61,7 +59,7 @@ def get_shops(request):
 @api_view(['POST'])
 @permission_classes([AllowAny, ])
 def search_product_by_name(request):
-    prods = Product.objects.filter()
+    prods = Product.objects.filter(name__contains=request.data['part_name'])
     serializer = ProductSerializer(prods, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
