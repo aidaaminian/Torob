@@ -95,7 +95,12 @@ class Shop extends Component{
 
 const mapStateToProps = (state)=>{
     return {
+<<<<<<< HEAD
         token: state.token
+=======
+      token: state.token,
+        username: state.username
+>>>>>>> bff81d7af0792427ad35bc3346bcff0fd09c1d7d
     }
 }
 

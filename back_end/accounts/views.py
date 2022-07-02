@@ -34,7 +34,7 @@ class Register(CreateAPIView):
 
 
 class UpdateUser(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     def put(self, request, *args, **kwargs):
         for key, value in request.data.items():

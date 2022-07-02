@@ -299,6 +299,7 @@ class Home extends Component{
     }
 
     render(){
+        console.log("username home ", this.props.username)
         let search_items_blocks = this.state.searchItems ?
             (
                 this.state.searchItems.map((item) => {
@@ -494,7 +495,12 @@ class Home extends Component{
                         </div>
                     </div>
                     <div class="navbar-bottom">
-                        <Link to="/shop" class="nav-item-bottom">پنل فروشگاه‌ها</Link>
+                        <Link to={{
+                            pathname: "/shop",
+                            state: {
+                                username: this.props.username
+                            }
+                        }} class="nav-item-bottom">پنل فروشگاه‌ها</Link>
                     </div>
                 </div>    
             </div>

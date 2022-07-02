@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import React, {Component} from 'react';
+import {connect} from 'react-redux'
+import {Link} from "react-router-dom";
 
 const emailinputStyle = {
     input: {
         color: "black",
         backgroundColor: "white",
-        border:"1px solid #ccc",
+        border: "1px solid #ccc",
         "border-top-left-radius": "4px",
         "border-bottom-left-radius": "4px",
         fontFamily: "iranyekan",
         "padding-left": "10px",
         height: "32px",
-        width:"88%"
+        width: "88%"
     }
 };
 
@@ -19,117 +20,215 @@ const nameinputStyle = {
     input: {
         color: "black",
         backgroundColor: "white",
-        border:"1px solid #ccc",
+        border: "1px solid #ccc",
         "border-top-left-radius": "4px",
         "border-bottom-left-radius": "4px",
         fontFamily: "iranyekan",
         "padding-left": "10px",
         "padding-bottom": "2px",
         height: "34px",
-        width:"98.5%"
+        width: "88%"
     }
 };
 
-class ShopOwnerAccount extends Component{
+class ShopOwnerAccount extends Component {
 
     constructor(props) {
         super(props);
-   
+
         this.state = {
-            emailClass: 'login-register-input-div'
+            emailClass: 'login-register-input-div',
+            currentUsername: this.props.location.state.username
         };
     }
 
     componentDidMount() {
-        
+
         this.setState({
             emailClass: 'login-register-input-div'
         })
-            
-    }
-    
-
-    userButtonClick(){
 
     }
 
-    changeNameFocusStyle(){
+
+    userButtonClick() {
+    }
+
+    emailButtonClick() {
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "username": this.state.currentUsername,
+                "email": document.getElementById("address").value
+            })
+        };
+        fetch('http://127.0.0.1:8000/update/', requestOptions)
+            .then((res) => {
+                    if(res.status === 200) {alert("آدرس ایمیل با موفقیت تغییر یافت")}
+                    else {}
+                document.getElementById("address").value = ""
+                }
+            ).then((json) => {
+
+            {
+
+            }
+        })
+    }
+
+    numberButtonClick() {
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "username": this.state.currentUsername,
+                "phone_number": document.getElementById("number").value
+            })
+        };
+        fetch('http://127.0.0.1:8000/update/', requestOptions)
+            .then((res) => {
+                    if(res.status === 200) {alert("شماره موبایل با موفقیت تغییر یافت")}
+                    else {}
+                    document.getElementById("number").value = ""
+                }
+            ).then((json) => {
+
+            {
+
+            }
+        })
+    }
+
+    changeNameFocusStyle() {
         document.getElementById("name").style.boxShadow = "0px 0px 0px 3px #e8f1ff";
     }
 
-    changeNameBlurStyle(){
+    changeNameBlurStyle() {
         document.getElementById("name").style.boxShadow = "unset";
     }
 
-    changeAddressFocusStyle(){
+    changeAddressFocusStyle() {
         document.getElementById("address").style.boxShadow = "0px 0px 0px 3px #e8f1ff";
     }
 
-    changeAddressBlurStyle(){
+    changeAddressBlurStyle() {
         document.getElementById("address").style.boxShadow = "unset";
     }
-    
-    render(){
-        return(
+
+    changeNumberFocusStyle() {
+        document.getElementById("number").style.boxShadow = "0px 0px 0px 3px #e8f1ff";
+    }
+
+    changeNumberBlurStyle() {
+        document.getElementById("number").style.boxShadow = "unset";
+    }
+
+    render() {
+        console.log("username shopowneraccount ", this.state.currentUsername)
+        return (
             <body class="shop-page">
-                <div class="account-panel">
-                    <div class="shop-panel-item">
-                        <a href="/shop" ><svg stroke="currentColor" color="#333333" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="35px" width="35px" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></a>
-                        <div class="shop-panel-item-name">
-                            فروشگاه
-                        </div>
-                    </div>
-                    <div class="shop-panel-item  active-item">
-                        <a href="/shopAccount" ><svg stroke="currentColor" color="white" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="35px" width="35px" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></a>
-                        <div class="shop-panel-item-name">
-                            حساب من
-                        </div>
+            <div class="account-panel">
+                <div class="shop-panel-item">
+                    <Link to={{
+                        pathname: "/shop",
+                        state: {
+                            username: this.state.currentUsername
+                        }
+                    }}>
+                        <svg stroke="currentColor" color="#333333" fill="none" stroke-width="2" viewBox="0 0 24 24"
+                             stroke-linecap="round" stroke-linejoin="round" height="35px" width="35px"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                    </Link>
+                    <div class="shop-panel-item-name">
+                        فروشگاه
                     </div>
                 </div>
-                <div class="middle-panel">
-                    <button id="usernamebutton" onClick={this.userButtonClick.bind(this)} class="account-middle-panel-change">اطلاعات کاربری</button>      
-                    <button id="usernamebutton" onClick={this.userButtonClick.bind(this)} class="account-middle-panel-exit">خروج</button>        
+                <div class="shop-panel-item  active-item">
+                    <Link to={{
+                        pathname: "/shopowneraccount",
+                        state: {
+                            username: this.state.currentUsername
+                        }
+                    }}>
+                        <svg stroke="currentColor" color="white" fill="none" stroke-width="2" viewBox="0 0 24 24"
+                             stroke-linecap="round" stroke-linejoin="round" height="35px" width="35px"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </Link>
+                    <div class="shop-panel-item-name">
+                        حساب من
+                    </div>
                 </div>
-                <div class="shop-account-left-panel">                   
-                    <div class="acconut-container">
-                        <div class="shop-account-title" >
-                            اطلاعات فردی       
+            </div>
+            <div class="middle-panel">
+                <button id="usernamebutton" onClick={this.userButtonClick.bind(this)}
+                        class="account-middle-panel-change">اطلاعات کاربری
+                </button>
+                <button id="usernamebutton" onClick={this.userButtonClick.bind(this)}
+                        class="account-middle-panel-exit">خروج
+                </button>
+            </div>
+            <div class="shop-account-left-panel">
+                <div class="acconut-container">
+                    <div class="shop-account-title">
+                        اطلاعات فردی
+                    </div>
+                    <div class="login-register-input-div">
+                        <div class="resgister-input-label">
+                            نام کاربری
                         </div>
-                        <div class="login-register-input-div">
-                            <div class="resgister-input-label">
-                                نام کاربری
-                            </div>
-                            <div class="account-input-button">
-                                <button id="usernamebutton" onClick={this.userButtonClick.bind(this)} class="account-change-button">تغییر شماره</button>
-                                <div class="account-username-block">{this.props.username}</div>
-                            </div>
-                        </div>
-                        <div class="login-register-input-div">
-                            <div class="resgister-input-label">
-                                آدرس ایمیل  
-                            </div>
-                            <div class="account-input-button">
-                                <button id="usernamebutton" onClick={this.userButtonClick.bind(this)} class="account-change-button">دریافت کد تایید</button>
-                                <input  autoComplete='off' id="address" onFocus={this.changeAddressFocusStyle.bind(this)} onBlur={this.changeAddressBlurStyle.bind(this)} style={emailinputStyle.input}/> 
-                            </div>    
-                        </div>
-                        <div class="login-register-input-div">
-                            <div class="resgister-input-label">
-                                نام خانوادگی رابط فروشگاه   
-                            </div>
-                            <input autoComplete='off' id="name" onFocus={this.changeNameFocusStyle.bind(this)} onBlur={this.changeNameBlurStyle.bind(this)} style={nameinputStyle.input}/> 
-                        </div>
-                        <div class="add-product-shop-button-block">
+                        <div class="account-input-button">
+                            <div className="account-username-block">{this.state.currentUsername}</div>
                         </div>
                     </div>
-                </div> 
+                    <div class="login-register-input-div">
+                        <div class="resgister-input-label">
+                            آدرس ایمیل
+                        </div>
+                        <div class="account-input-button">
+                            <button id="emailbutton" onClick={this.emailButtonClick.bind(this)}
+                                    class="account-change-button">تغییر آدرس ایمیل
+                            </button>
+                            <input autoComplete='off' id="address" onFocus={this.changeAddressFocusStyle.bind(this)}
+                                   onBlur={this.changeAddressBlurStyle.bind(this)} style={emailinputStyle.input}
+                            />
+                        </div>
+                    </div>
+                    <div class="login-register-input-div">
+                        <div class="resgister-input-label">
+                            شماره موبایل
+                        </div>
+                        <div className="account-input-button">
+                        <button id="numberbutton" onClick={this.numberButtonClick.bind(this)}
+                                class="account-change-button">تغییر شماره موبایل
+                        </button>
+                        <input autoComplete='off' id="number" onFocus={this.changeNumberFocusStyle.bind(this)}
+                               onBlur={this.changeNumberBlurStyle.bind(this)} style={emailinputStyle.input}/>
+                        </div>
+                    </div>
+                    <div class="add-product-shop-button-block">
+                    </div>
+                </div>
+            </div>
             </body>
-        )        
-    }          
+        )
+    }
 }
-const mapStateToProps = (state) =>{
+
+const mapStateToProps = (state) => {
     return {
-        username : state.username
+        username: state.username
     }
 }
 export default connect(mapStateToProps)(ShopOwnerAccount)
