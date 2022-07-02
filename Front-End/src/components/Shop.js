@@ -40,6 +40,7 @@ class Shop extends Component{
     }
     
     render(){
+        console.log("username shop ", this.props.location.state.username)
         let shop_blocks = this.state ? (
             this.state.shops.map((item) => {
                 console.log("shops--shop_id " + item.shop_id)
@@ -74,7 +75,7 @@ class Shop extends Component{
         return(
             (
                 <div class="shop-page">
-                    <ShopNav/>
+                    <ShopNav username={this.props.location.state.username}/>
                     <div class="shop-left-panel">                   
                         <div class="shop-left-panel-head">
                             <Link to="/addshop" class="add-shop-button">
@@ -95,6 +96,7 @@ class Shop extends Component{
 const mapStateToProps = (state)=>{
     return {
       token: state.token,
+        username: state.username
     }
 }
 
