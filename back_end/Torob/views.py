@@ -46,7 +46,7 @@ class CreateShoppingDetail(CreateAPIView):
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny, ])
+@permission_classes([IsAuthenticated, ])
 def get_shop_report(request, shop_id):
     comps = Complaint.objects.filter(shop__shop_id=shop_id)
     serializer = ComplaintSerializer(comps, many=True)

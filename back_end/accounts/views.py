@@ -34,7 +34,7 @@ class Register(CreateAPIView):
 
 
 class UpdateUser(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def put(self, request, *args, **kwargs):
         for key, value in request.data.items():
@@ -68,7 +68,7 @@ class CreateProduct(CreateAPIView):
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny, ])
+@permission_classes([IsAuthenticated, ])
 def get_user_details(request, username):
     user1 = User.objects.get(username=username)
     serializer = UserSerializer(user1, many=False)
@@ -76,7 +76,7 @@ def get_user_details(request, username):
 
 
 @api_view(['POST'])
-@permission_classes([AllowAny, ])
+@permission_classes([IsAuthenticated, ])
 def add_product_to_favorites(request):
     user1 = User.objects.get(username=request.data['username'])
     prod1 = Product.objects.get(product_id=request.data['product_id'])
@@ -96,7 +96,7 @@ def remove_product_from_favorites(request):
 
 
 @api_view(['POST'])
-@permission_classes([AllowAny, ])
+@permission_classes([IsAuthenticated, ])
 def add_product_to_recent_view(request):
     user1 = User.objects.get(username=request.data['username'])
     prod1 = Product.objects.get(product_id=request.data['product_id'])
